@@ -5,7 +5,7 @@ const gotUser = user => ({ type: GOT_USER, user });
 
 export const attemptLogin = (credentials, history) => {
   return dispatch => {
-    return axios.post('/api/sessions', credentials)
+    return axios.post('https://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
       .then(result => result.data)
       .then(token => {
         window.localStorage.setItem('token', token);
@@ -21,7 +21,7 @@ export const attemptLogin = (credentials, history) => {
 
 export const getUserFromToken = token => {
   return dispatch => {
-    return axios.get(`/api/sessions/${token}`)
+    return axios.get(`https://immense-escarpment-58025.herokuapp.com/api/sessions/${token}`)
       .then(result => result.data)
       .then(user => dispatch(gotUser(user)))
       .catch(err => {

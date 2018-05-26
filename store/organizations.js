@@ -6,7 +6,7 @@ const getOrganizations = organizations => ({ type: GET_ORGANIZATIONS, organizati
 
 export const getOrganizationsFromServer = () => {
   return dispatch => {
-    return axios.get('/api/organizations')
+    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/organizations')
       .then(result => result.data)
       .then(organizations => dispatch(getOrganizations(organizations)));
   };
