@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 class OrganizationInfo extends React.Component {
-
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('organization').name

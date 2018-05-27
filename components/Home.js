@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, View, FlatList, Button } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { getOrganizationsFromServer } from '../store';
+import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -43,6 +42,9 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   getOrganizations() {
     dispatch(getOrganizationsFromServer());
+  },
+  getUser(token) {
+    dispatch(getUserFromToken(token));
   }
 });
 
