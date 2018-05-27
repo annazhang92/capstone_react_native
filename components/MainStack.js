@@ -5,17 +5,20 @@ import { createStackNavigator } from 'react-navigation';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 import Home from './Home.js';
-import SignIn from './login/Login';
+import Login from './login/Login';
 
 const RootStack = createStackNavigator({
   Home: {
     screen: Home
   },
-  SignIn: {
-    screen: SignIn
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      headerMode: 'none'
+    }
   }
 }, {
-  initialRouteName: 'SignIn'
+  initialRouteName: 'Login'
 });
 
 class MainStack extends React.Component {

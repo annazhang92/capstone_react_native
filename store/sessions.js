@@ -1,19 +1,19 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
 const GOT_USER = 'GOT_USER';
 const gotUser = user => ({ type: GOT_USER, user });
 
-export const attemptLogin = (credentials, history) => {
+export const attemptLogin = credentials => {
   return dispatch => {
-    return axios.post('https://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
+    return axios.post('http://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
       .then(result => result.data)
       .then(token => {
-        window.localStorage.setItem('token', token);
+        AsyncStorage.setItem('token', token);
         dispatch(getUserFromToken(token));
       })
-      .then(() => history.push('/'))
       .catch(err => {
-        window.localStorage.removeItem('token');
+        AsyncStorage.removeItem('token');
         return err;
       });
   };
@@ -21,11 +21,13 @@ export const attemptLogin = (credentials, history) => {
 
 export const getUserFromToken = token => {
   return dispatch => {
-    return axios.get(`https://immense-escarpment-58025.herokuapp.com/api/sessions/${token}`)
+    return axios.get(`http://immense-escarpment-58025.herokuapp.com/api/sessions/${token}`)
       .then(result => result.data)
-      .then(user => dispatch(gotUser(user)))
+      .then(user => {
+        dispatch(gotUser(user));
+      })
       .catch(err => {
-        window.localStorage.removeItem('token');
+        AsyncStorage.removeItem('token');
         return err;
       });
   };
