@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, FlatList, Button } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
+import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
@@ -14,23 +15,24 @@ class Home extends React.Component {
     const { organizations } = this.props;
     const { navigate } = this.props.navigation;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <FlatList
-          data={organizations}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => (
-            <View>
-            <Text style={{ fontSize: 22, textAlign: 'center' }}>
-              {item.name} ({item.organization_type})
-            </Text>
-            <Button
-              title='Details'
-              onPress={() => navigate('Details', { organization: item })}
-            />
-            </View>
-          )}
-        />
-      </View>
+      <ScrollView>
+        <List>
+          {
+            organizations.map((org, i) => (
+              <View>
+                <ListItem
+                  title={org.name}
+                  key={org.id}
+                  // keyExtractor={(org, i) => org.id}
+                  onPress={() => navigate('Details', { organization: org })}
+                />
+
+              </View>
+            ))
+          }
+        </List>
+      </ScrollView>
+
     );
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Button } from 'react-native-elements';
 
 export default class OrganizationInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -10,7 +11,9 @@ export default class OrganizationInfo extends React.Component {
   render() {
     const organization = this.props.navigation.getParam('organization', 'no organization');
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView>
+      <View style={styles.container}>
+
         <Text style={{ fontSize: 35, textAlign: 'left' }}>
           {organization.name}
         </Text>
@@ -26,7 +29,14 @@ export default class OrganizationInfo extends React.Component {
         <Text style={{ fontSize: 22, textAlign: 'left' }}>
           {organization.contact_phone}
         </Text>
+        <Button
+          raised
+          buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+          title='Check In'
+          onPress={() => console.log('this will check in a user')}
+        />
       </View>
+      </ScrollView>
     );
   }
 }
@@ -34,13 +44,7 @@ export default class OrganizationInfo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#02a4ff',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  logo: {
-    height: 200,
-    width: 200
+    padding: 20
   }
 });
 
