@@ -6,19 +6,19 @@ import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 import Home from './Home.js';
 import Login from './login/Login';
+import OrganizationInfo from './OrganizationInfo';
 
 const RootStack = createStackNavigator({
-  Home: {
-    screen: Home
-  },
+  Home: Home,
   Login: {
     screen: Login,
     navigationOptions: {
       headerMode: 'none'
     }
-  }
+  },
+  Details: OrganizationInfo
 }, {
-  initialRouteName: 'Login'
+  initialRouteName: 'Home'
 });
 
 class MainStack extends React.Component {
@@ -27,7 +27,7 @@ class MainStack extends React.Component {
     getOrganizations();
     AsyncStorage.getItem('token')
       .then(token => {
-        if(token) {
+        if (token) {
           getUser(token);
         }
         console.log('no token')
