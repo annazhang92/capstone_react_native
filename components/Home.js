@@ -1,13 +1,9 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { getOrganizationsFromServer } from '../store';
+import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
-  componentDidMount() {
-    this.props.getOrganizations();
-  }
-
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -30,6 +26,9 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   getOrganizations() {
     dispatch(getOrganizationsFromServer());
+  },
+  getUser(token) {
+    dispatch(getUserFromToken(token));
   }
 });
 
