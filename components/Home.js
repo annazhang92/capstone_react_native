@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Button } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
@@ -14,21 +14,20 @@ class Home extends React.Component {
   render() {
     const { organizations } = this.props;
     const { navigate } = this.props.navigation;
+    let num = 1;
     return (
       <ScrollView>
         <List>
           {
-            organizations.map((org, i) => (
-              <View>
-                <ListItem
-                  roundAvatar
-                  avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
-                  title={org.name}
-                  subtitle={org.organization_type}
-                  key={org.id}
-                  onPress={() => navigate('Details', { organization: org })}
-                />
-              </View>
+            organizations.map((organization, index) => (
+              <ListItem
+                roundAvatar
+                avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
+                title={organization.name}
+                subtitle={organization.organization_type}
+                key={num++}
+                onPress={() => navigate('Details', { organization })}
+              />
             ))
           }
         </List>
