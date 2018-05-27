@@ -1,18 +1,30 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { connect } from 'react-redux';
+import { attemptLogin } from '../../store';
+import LoginForm from './LoginForm';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(credentials) {
+    this.props.login(credentials);
+  }
+
   render() {
     return (
-      <View style={ styles.container }>
+      <KeyboardAvoidingView behavior='position' style={ styles.container }>
         <View style={ styles.logoContainer }>
           <Image source={require('../../assets/images/logo.png')} style={ styles.logo } />
           <Text style={ styles.title }>Partner with your next training buddy, instructor, and more.</Text>
         </View>
         <View style={ styles.formContainer }>
-
+          <LoginForm handleSubmit={ this.handleSubmit } />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -29,8 +41,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   logo: {
-    height: 100,
-    width: 100
+    height: 200,
+    width: 200
   },
   title: {
     color: '#FFF',
@@ -39,7 +51,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     opacity: 0.9
   },
-  input: {
-
+  formContainer: {
+    width: 300
   }
 });
+
+const mapState = null;
+const mapDispatch = dispatch => ({
+  login(credentials) {
+    dispatch(attemptLogin(credentials));
+  }
+});
+
+export default connect(mapState, mapDispatch)(Login);

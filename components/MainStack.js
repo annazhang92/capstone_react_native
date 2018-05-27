@@ -5,12 +5,17 @@ import { createStackNavigator } from 'react-navigation';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 import Home from './Home.js';
-import SignIn from './login/Login';
+import Login from './login/Login';
 import OrganizationInfo from './OrganizationInfo';
 
 const RootStack = createStackNavigator({
   Home: Home,
-  SignIn: SignIn,
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      headerMode: 'none'
+    }
+  },
   Details: OrganizationInfo
 }, {
   initialRouteName: 'Home'
