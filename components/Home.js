@@ -20,8 +20,8 @@ class Home extends React.Component {
           keyExtractor={({ id }) => id}
           renderItem={({ item }) => (
             <View>
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              {item.name}
+            <Text style={{ fontSize: 22, textAlign: 'center' }}>
+              {item.name} ({item.organization_type})
             </Text>
             <Button
               title='Details'
