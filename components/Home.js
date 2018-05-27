@@ -1,19 +1,35 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, FlatList, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
+  static navigationOptions = {
+    title: 'Choose an Organization!'
+  }
+  componentDidMount() {
+    this.props.getOrganizations();
+  }
   render() {
+    const { organizations } = this.props;
+    const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        { this.props.organizations ?
-          this.props.organizations.map(organization => (
-            <Text key={ organization.name }>{ organization.name }</Text>
-          ))
-          :
-          null
-        }
+        <FlatList
+          data={organizations}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => (
+            <View>
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              {item.name}
+            </Text>
+            <Button
+              title='Details'
+              onPress={() => navigate('Details', { organization: item })}
+            />
+            </View>
+          )}
+        />
       </View>
     );
   }
