@@ -30,7 +30,6 @@ class MainStack extends React.Component {
         if (token) {
           getUser(token);
         }
-        console.log('no token')
       })
       .catch(error => console.log(error));
   }

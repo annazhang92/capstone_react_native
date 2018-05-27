@@ -7,10 +7,10 @@ import LoginForm from './LoginForm';
 class Login extends React.Component {
   constructor() {
     super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.login = this.login.bind(this);
   }
 
-  handleSubmit(credentials) {
+  login(credentials) {
     this.props.login(credentials);
   }
 
@@ -22,7 +22,7 @@ class Login extends React.Component {
           <Text style={ styles.title }>Partner with your next training buddy, instructor, and more.</Text>
         </View>
         <View style={ styles.formContainer }>
-          <LoginForm handleSubmit={ this.handleSubmit } />
+          <LoginForm login={ this.login } />
         </View>
       </KeyboardAvoidingView>
     );
