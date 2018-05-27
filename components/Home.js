@@ -21,12 +21,13 @@ class Home extends React.Component {
             organizations.map((org, i) => (
               <View>
                 <ListItem
+                  roundAvatar
+                  avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
                   title={org.name}
+                  subtitle={org.organization_type}
                   key={org.id}
-                  // keyExtractor={(org, i) => org.id}
                   onPress={() => navigate('Details', { organization: org })}
                 />
-
               </View>
             ))
           }

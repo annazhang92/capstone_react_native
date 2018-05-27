@@ -35,6 +35,12 @@ export default class OrganizationInfo extends React.Component {
           title='Check In'
           onPress={() => console.log('this will check in a user')}
         />
+        <Button
+          raised
+          buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
+          title='Request to Join'
+          onPress={() => console.log('this will send a request')}
+        />
       </View>
       </ScrollView>
     );
