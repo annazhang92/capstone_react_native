@@ -4,11 +4,11 @@ import store from './store';
 import { createStackNavigator } from 'react-navigation';
 
 import Home from './components/Home.js';
+import OrganizationInfo from './components/OrganizationInfo';
 
 const RootStack = createStackNavigator({
-  Home: {
-    screen: Home
-  }
+  Home: Home,
+  Details: OrganizationInfo
 }, {
   initialRouteName: 'Home'
 });
