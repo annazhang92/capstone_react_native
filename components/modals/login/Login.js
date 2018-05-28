@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: 300
   },
   logo: {
     height: 200,
