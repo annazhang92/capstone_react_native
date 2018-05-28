@@ -6,15 +6,19 @@ import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
   static navigationOptions = {
-    title: 'Choose an Organization!'
+    title: 'Choose an Organization!',
+    headerMode: 'float'
   }
   componentDidMount() {
-    this.props.getOrganizations();
+    const { user, navigation } = this.props;
+    if(!user.id) {
+      navigation.navigate('Login');
+    }
   }
+
   render() {
-    const { organizations } = this.props;
+    const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
-    let num = 1;
     return (
       <ScrollView>
         <List>
@@ -25,7 +29,7 @@ class Home extends React.Component {
                 avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
                 title={organization.name}
                 subtitle={organization.organization_type}
-                key={num++}
+                key={index}
                 onPress={() => navigate('Details', { organization })}
               />
             ))
@@ -38,7 +42,8 @@ class Home extends React.Component {
 }
 
 const mapState = state => ({
-  organizations: state.organizations
+  organizations: state.organizations,
+  user: state.user
 });
 
 const mapDispatch = dispatch => ({

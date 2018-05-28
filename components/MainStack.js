@@ -6,20 +6,23 @@ import { Asset, AppLoading } from 'expo';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 import Home from './Home.js';
-import Login from './login/Login';
 import OrganizationInfo from './OrganizationInfo';
+import ModalStack from './modals/ModalStack';
+
+const NavStack = createStackNavigator({
+  Home: Home,
+  Details: OrganizationInfo,
+}, {
+  headerMode: 'screen',
+  initialRouteName: 'Home'
+});
 
 const RootStack = createStackNavigator({
-  Home: Home,
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      headerMode: 'none'
-    }
-  },
-  Details: OrganizationInfo
+  Modals: ModalStack,
+  Nav: NavStack
 }, {
-  initialRouteName: 'Home'
+  initialRouteName: 'Nav',
+  headerMode: 'none'
 });
 
 class MainStack extends React.Component {
@@ -29,6 +32,7 @@ class MainStack extends React.Component {
       ready: false
     };
     this.asyncLoad = this.asyncLoad.bind(this);
+    this.loadApp = this.loadApp.bind(this);
   }
 
   asyncLoad() {
@@ -45,12 +49,18 @@ class MainStack extends React.Component {
       .then(() => getOrganizations());
   }
 
+  loadApp() {
+    if(!this.state.ready) {
+      this.setState({ ready: true });
+    }
+  }
+
   render() {
     if(!this.state.ready) {
       return (
         <AppLoading
           startAsync={ this.asyncLoad }
-          onFinish={ () => this.setState({ ready: true })}
+          onFinish={ this.loadApp }
           onError={ console.warn }
         />
       );

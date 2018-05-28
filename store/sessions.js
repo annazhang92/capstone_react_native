@@ -4,7 +4,7 @@ import { AsyncStorage } from 'react-native';
 const GOT_USER = 'GOT_USER';
 const gotUser = user => ({ type: GOT_USER, user });
 
-export const attemptLogin = credentials => {
+export const attemptLogin = (credentials, navigation) => {
   return dispatch => {
     return axios.post('http://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
       .then(result => result.data)
@@ -12,6 +12,7 @@ export const attemptLogin = credentials => {
         AsyncStorage.setItem('token', token);
         dispatch(getUserFromToken(token));
       })
+      .then(() => navigation.navigate('Home'))
       .catch(err => {
         AsyncStorage.removeItem('token');
         return err;

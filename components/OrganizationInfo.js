@@ -13,7 +13,6 @@ export default class OrganizationInfo extends React.Component {
     return (
       <ScrollView>
       <View style={styles.container}>
-
         <Text style={{ fontSize: 35, textAlign: 'left' }}>
           {organization.name}
         </Text>
