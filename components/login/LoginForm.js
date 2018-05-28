@@ -6,18 +6,47 @@ export default class LoginForm extends React.Component {
     super();
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errors: {}
     };
     this.handleChange.bind = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.validators = {
+      email: value => {
+        if(!value) return 'Email address is required.';
+      },
+      password: value => {
+        if(!value) return 'Password is required.';
+      }
+    };
   }
 
   handleChange(name, value) {
     this.setState({ [name]: value });
   }
 
+  handleSubmit() {
+    const errors = Object.keys(this.validators).reduce((memo, key) => {
+      const validator = this.validators[key];
+      const value = this.state[key];
+      const error = validator(value);
+      if(error) {
+        memo[key] = error;
+      }
+      return memo;
+    }, {});
+    this.setState({ errors });
+    if(Object.keys(errors).length) {
+      return;
+    }
+    this.props.login(this.state);
+  }
+
   render() {
+    const { errors } = this.state;
     return (
       <View style={ styles.container }>
+        <Text style={ styles.error }>{ errors.email }</Text>
         <TextInput
           onChangeText={ value => this.handleChange('email', value) }
           placeholder='Email Address'
@@ -29,9 +58,10 @@ export default class LoginForm extends React.Component {
           autoCorrect={ false }
           style={ styles.input }
         />
+        <Text style={ styles.error }>{ errors.password }</Text>
         <TextInput
           onChangeText={ value => this.handleChange('password', value) }
-          onSubmitEditing={ () => this.props.handleSubmit(this.state) }
+          onSubmitEditing={ this.handleSubmit }
           placeholder='Password'
           placeholderTextColor='rgba(255, 255, 255, 0.7)'
           returnKeyType='go'
@@ -41,7 +71,7 @@ export default class LoginForm extends React.Component {
         />
         <TouchableOpacity
           style={ styles.buttonContainer }
-          onPress={ () => this.props.handleSubmit(this.state) }
+          onPress={ this.handleSubmit }
         >
           <Text style={ styles.buttonText }>Login</Text>
         </TouchableOpacity>
@@ -70,5 +100,11 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#FFFFFF'
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    fontWeight: '700',
+    marginBottom: 5
   }
 });

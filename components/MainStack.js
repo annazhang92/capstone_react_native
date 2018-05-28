@@ -33,17 +33,16 @@ class MainStack extends React.Component {
 
   asyncLoad() {
     const { getOrganizations, getUser } = this.props;
-    return Promise.all([
-      getOrganizations(),
-      AsyncStorage.getItem('token')
-        .then(token => {
-          if (token) {
-            getUser(token);
-          }
-        })
-        .catch(error => console.log(error)),
-      require('../assets/images/logo.png')
-    ])
+    return AsyncStorage.getItem('token')
+      .then(token => {
+        if(token) {
+          getUser(token);
+        }
+      })
+      .then(() => Asset.fromModule(
+        require('../assets/images/logo.png')
+      ).downloadAsync())
+      .then(() => getOrganizations());
   }
 
   render() {
