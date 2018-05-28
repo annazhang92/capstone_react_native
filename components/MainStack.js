@@ -2,6 +2,7 @@ import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';
+import { Asset, AppLoading } from 'expo';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 import Home from './Home.js';
@@ -22,20 +23,39 @@ const RootStack = createStackNavigator({
 });
 
 class MainStack extends React.Component {
-  componentDidMount() {
+  constructor() {
+    super();
+    this.state = {
+      ready: false
+    };
+    this.asyncLoad = this.asyncLoad.bind(this);
+  }
+
+  asyncLoad() {
     const { getOrganizations, getUser } = this.props;
-    getOrganizations();
-    AsyncStorage.getItem('token')
-      .then(token => {
-        if (token) {
-          getUser(token);
-        }
-        console.log('no token')
-      })
-      .catch(error => console.log(error));
+    return Promise.all([
+      getOrganizations(),
+      AsyncStorage.getItem('token')
+        .then(token => {
+          if (token) {
+            getUser(token);
+          }
+        })
+        .catch(error => console.log(error)),
+      require('../assets/images/logo.png')
+    ])
   }
 
   render() {
+    if(!this.state.ready) {
+      return (
+        <AppLoading
+          startAsync={ this.asyncLoad }
+          onFinish={ () => this.setState({ ready: true })}
+          onError={ console.warn }
+        />
+      );
+    }
     return (
       <RootStack />
     );
