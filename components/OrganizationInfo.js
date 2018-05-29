@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 import { getOrganizationsFromServer, createOrganizationRequestOnServer } from '../store';
 import { connect } from 'react-redux';
@@ -13,21 +13,35 @@ class OrganizationInfo extends React.Component {
 
   constructor() {
     super();
-    this.state = { refreshing: false }
+    this.state = {
+      refreshing: false,
+    }
     this.onRefresh = this.onRefresh.bind(this);
   }
 
+/*  componentDidMount() {
+    // AsyncStorage.getItem('token', (err, val) => {
+    //   if(!err) this.setState({ user: val })
+    // })
+    AsyncStorage.getItem('token').then((value) => {
+        this.setState({'token': value});
+    }).done();
+  }
+*/
+
   onRefresh() {
-    console.log('refreshing')
+    // console.log('refreshing')
     this.setState({ refreshing: true })
     this.props.loadOrganizations()
       .then(() => this.setState({ refreshing: false }))
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     const organization = this.props.navigation.getParam('organization');
     const { createOrganizationRequest, user } = this.props;
+    // const { user } = this.state;
+    // console.log(user)
     return (
       <ScrollView
         refreshControl={
@@ -63,7 +77,8 @@ class OrganizationInfo extends React.Component {
             raised
             buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
             title='Request to Join'
-            onPress={() => createOrganizationRequest({ userId: user.id, organizationId: organization.id })}
+            // onPress={() => createOrganizationRequest({ userId: user.id, organizationId: organization.id })
+            onPress={() => console.log('this will send a request')}
           />
         </View>
       </ScrollView>
@@ -78,10 +93,21 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapState = ({ user, organizationRequests }) => {
-  console.log('OR:', organizationRequests)
+const mapState = (/*{ user, organizationRequests }*/state) => {
+  // console.log('user:', user)
+  const organizationRequests = state.organizationRequests
+  const user = state.user
+  // console.log(state)
+
+  // let user;
+  // AsyncStorage.getItem('token', (err, val) => {
+  //   user = val;
+  // })
+
+  // console.log('mapStateuser:', user)
+
   return {
-    user,
+    // user,
     organizationRequests
   }
 }

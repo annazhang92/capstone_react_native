@@ -13,16 +13,15 @@ export default class LoginForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validators = {
       email: value => {
-        if(!value) return 'Email address is required.';
+        if (!value) return 'Email address is required.';
       },
       password: value => {
-        if(!value) return 'Password is required.';
+        if (!value) return 'Password is required.';
       }
     };
   }
 
   handleChange(name, value) {
-    // console.log(name, value)
     this.setState({ [name]: value });
   }
 
@@ -40,7 +39,6 @@ export default class LoginForm extends React.Component {
     if(Object.keys(errors).length) {
       return;
     }
-    // console.log('submit:', this.state)
     this.props.login(this.state);
   }
 
