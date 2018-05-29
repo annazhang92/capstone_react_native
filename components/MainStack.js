@@ -37,22 +37,20 @@ class MainStack extends React.Component {
 
   asyncLoad() {
     const { getOrganizations, getUser } = this.props;
-    return AsyncStorage.getItem('token')
-      .then(token => {
-        if(token) {
-          getUser(token);
-        }
-      })
-      .then(() => Asset.fromModule(
-        require('../assets/images/logo.png')
-      ).downloadAsync())
-      .then(() => getOrganizations());
+    return Promise.all([
+      AsyncStorage.getItem('token')
+        .then(token => {
+          if(token) {
+            return getUser(token);
+          }
+        }),
+      Asset.fromModule(require('../assets/images/logo.png')).downloadAsync(),
+      getOrganizations()
+    ]);
   }
 
   loadApp() {
-    if(!this.state.ready) {
-      this.setState({ ready: true });
-    }
+    this.setState({ ready: true });
   }
 
   render() {
@@ -77,7 +75,7 @@ const mapDispatch = dispatch => ({
     dispatch(getOrganizationsFromServer());
   },
   getUser(token) {
-    dispatch(getUserFromToken(token));
+    return dispatch(getUserFromToken(token));
   }
 });
 

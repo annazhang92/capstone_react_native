@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Button } from 'react-native';
+import { Text, View, ScrollView, Button, AsyncStorage } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
@@ -9,6 +9,7 @@ class Home extends React.Component {
     title: 'Choose an Organization!',
     headerMode: 'float'
   }
+
   componentDidMount() {
     const { user, navigation } = this.props;
     if(!user.id) {
