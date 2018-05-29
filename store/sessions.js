@@ -6,8 +6,8 @@ const gotUser = user => ({ type: GOT_USER, user });
 
 export const getUserFromToken = token => {
   return dispatch => {
-    return axios.get(`'http://192.168.1.6:3000/api/sessions/${token}`)
-    // return axios.get(`https://immense-escarpment-58025.herokuapp.com/api/sessions${token}`)
+    // return axios.get(`'http://172.16.25.67:3000/api/sessions/${token}`)
+    return axios.get(`https://immense-escarpment-58025.herokuapp.com/api/sessions${token}`)
       .then(result => result.data)
       .then(user => {
         console.log('Thunk-User:', user)
@@ -24,8 +24,8 @@ export const getUserFromToken = token => {
 export const attemptLogin = (credentials, navigation) => {
   // let _token;
   return dispatch => {
-    return axios.post('http://192.168.1.6:3000/api/sessions', credentials)
-    // return axios.post('https://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
+    // return axios.post('http://172.16.25.67:3000/api/sessions', credentials)
+    return axios.post('https://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
       .then(result => result.data)
       .then(token => {
         // _token = token;

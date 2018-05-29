@@ -8,8 +8,8 @@ const createOrganizationRequest = organizationRequest => ({ type: CREATE_ORGANIZ
 
 export const getOrganizationRequestsFromServer = () => {
   return dispatch => {
-    return axios.get('http://192.168.1.6:3000/api/organizationRequests')
-    // return axios.get('https://immense-escarpment-58025.herokuapp.com/api/organizationRequests')
+    // return axios.get('http://172.16.25.67:3000/api/organizationRequests')
+    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/organizationRequests')
       .then(result => result.data)
       .then(organizationRequests => dispatch(getOrganizationRequests(organizationRequests)));
   };
@@ -17,8 +17,8 @@ export const getOrganizationRequestsFromServer = () => {
 
 export const createOrganizationRequestOnServer = (organizationRequest) => {
   return dispatch => {
-    return axios.post('http://192.168.1.6:3000/api/organizationRequests', organizationRequest)
-    // return axios.get('https://immense-escarpment-58025.herokuapp.com/api/organizationRequests')
+    // return axios.post('http://172.16.25.67:3000/api/organizationRequests', organizationRequest)
+    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/organizationRequests')
       .then(result => result.data)
       .then(organizationRequest => dispatch(createOrganizationRequest(organizationRequest)));
   };

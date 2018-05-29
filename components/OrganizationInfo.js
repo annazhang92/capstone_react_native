@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => {
   const organizationRequests = state.organizationRequests
   const user = state.user
-  console.log(state)
+  // console.log(state)
   return {
     user,
     organizationRequests

@@ -40,13 +40,13 @@ class MainStack extends React.Component {
     return Promise.all([
       AsyncStorage.getItem('token')
         .then(token => {
-          if(token) {
+          if (token) {
             return getUser(token);
           }
         }),
       Asset.fromModule(require('../assets/images/logo.png')).downloadAsync(),
       getOrganizations(),
-      getOrganizationRequests(),
+      getOrganizationRequests()
     ]);
   }
 
@@ -55,7 +55,7 @@ class MainStack extends React.Component {
   }
 
   render() {
-    if (!this.state.ready) {
+    if(!this.state.ready) {
       return (
         <AppLoading
           startAsync={ this.asyncLoad }
