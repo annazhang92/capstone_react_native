@@ -36,7 +36,7 @@ class MainStack extends React.Component {
   }
 
   asyncLoad() {
-    const { getOrganizations, getUser } = this.props;
+    const { getOrganizations, getUser, getOrganizationRequests } = this.props;
     return Promise.all([
       AsyncStorage.getItem('token')
         .then(token => {
@@ -51,13 +51,11 @@ class MainStack extends React.Component {
   }
 
   loadApp() {
-    if(!this.state.ready) {
-      this.setState({ ready: true });
-    }
+    this.setState({ ready: true });
   }
 
   render() {
-    if(!this.state.ready) {
+    if (!this.state.ready) {
       return (
         <AppLoading
           startAsync={ this.asyncLoad }

@@ -19,18 +19,7 @@ class OrganizationInfo extends React.Component {
     this.onRefresh = this.onRefresh.bind(this);
   }
 
-/*  componentDidMount() {
-    // AsyncStorage.getItem('token', (err, val) => {
-    //   if(!err) this.setState({ user: val })
-    // })
-    AsyncStorage.getItem('token').then((value) => {
-        this.setState({'token': value});
-    }).done();
-  }
-*/
-
   onRefresh() {
-    // console.log('refreshing')
     this.setState({ refreshing: true })
     this.props.loadOrganizations()
       .then(() => this.setState({ refreshing: false }))
@@ -41,7 +30,7 @@ class OrganizationInfo extends React.Component {
     const organization = this.props.navigation.getParam('organization');
     const { createOrganizationRequest, user } = this.props;
     // const { user } = this.state;
-    // console.log(user)
+    console.log(user)
     return (
       <ScrollView
         refreshControl={
@@ -77,8 +66,8 @@ class OrganizationInfo extends React.Component {
             raised
             buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
             title='Request to Join'
-            // onPress={() => createOrganizationRequest({ userId: user.id, organizationId: organization.id })
-            onPress={() => console.log('this will send a request')}
+            onPress={() => createOrganizationRequest({ userId: user.id, organizationId: organization.id })}
+            // onPress={() => console.log('this will send a request')}
           />
         </View>
       </ScrollView>
@@ -93,21 +82,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapState = (/*{ user, organizationRequests }*/state) => {
-  // console.log('user:', user)
+const mapState = (state) => {
   const organizationRequests = state.organizationRequests
   const user = state.user
-  // console.log(state)
-
-  // let user;
-  // AsyncStorage.getItem('token', (err, val) => {
-  //   user = val;
-  // })
-
-  // console.log('mapStateuser:', user)
-
+  console.log(state)
   return {
-    // user,
+    user,
     organizationRequests
   }
 }

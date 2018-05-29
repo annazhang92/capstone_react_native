@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Button, RefreshControl } from 'react-native';
+import { Text, View, ScrollView, Button, RefreshControl, AsyncStorage } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
@@ -67,13 +67,11 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  getOrganizations() {
-    dispatch(getOrganizationsFromServer());
-  },
   getUser(token) {
     dispatch(getUserFromToken(token));
   },
-  loadOrganizations: () => dispatch(getOrganizationsFromServer())
+  loadOrganizations: () => dispatch(getOrganizationsFromServer()),
+  // loadOrganizationRequests: () => dispatch(getOrganizationsFromServer()),
 });
 
 export default connect(mapState, mapDispatch)(Home);
