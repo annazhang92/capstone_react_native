@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const GET_ORGANIZATIONS = 'GET_ORGANIZATIONS';
@@ -22,4 +23,3 @@ const store = (state = [], action) => {
 };
 
 export default store;
-
