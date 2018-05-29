@@ -1,21 +1,47 @@
 import React from 'react';
-import { Text, View, ScrollView, Button } from 'react-native';
+import { Text, View, ScrollView, Button, RefreshControl } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
   static navigationOptions = {
-    title: 'Choose an Organization!'
+    title: 'Choose an Organization!',
+    headerMode: 'float'
   }
+
+  constructor() {
+    super();
+    this.state = { refreshing: false }
+    this.onRefresh = this.onRefresh.bind(this);
+  }
+
   componentDidMount() {
-    this.props.getOrganizations();
+    const { user, navigation } = this.props;
+    if(!user.id) {
+      navigation.navigate('Login');
+    }
   }
+
+  onRefresh() {
+    console.log('refreshing')
+    this.setState({ refreshing: true })
+    this.props.loadOrganizations()
+      .then(() => this.setState({ refreshing: false }))
+  }
+
   render() {
-    const { organizations } = this.props;
+    const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => this.onRefresh()}
+          />
+        }
+      >
         <List>
           {
             organizations.map((organization, index) => (
@@ -31,13 +57,13 @@ class Home extends React.Component {
           }
         </List>
       </ScrollView>
-
     );
   }
 }
 
 const mapState = state => ({
-  organizations: state.organizations
+  organizations: state.organizations,
+  user: state.user
 });
 
 const mapDispatch = dispatch => ({
@@ -46,7 +72,8 @@ const mapDispatch = dispatch => ({
   },
   getUser(token) {
     dispatch(getUserFromToken(token));
-  }
+  },
+  loadOrganizations: () => dispatch(getOrganizationsFromServer())
 });
 
 export default connect(mapState, mapDispatch)(Home);

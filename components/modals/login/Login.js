@@ -1,16 +1,21 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
-import { attemptLogin } from '../../store';
+import { attemptLogin } from '../../../store';
 import LoginForm from './LoginForm';
 
 class Login extends React.Component {
+  static navigationOptions = {
+    headerMode: 'none'
+  }
+
   constructor() {
     super();
     this.login = this.login.bind(this);
   }
 
   login(credentials) {
+    // console.log('Login Credentials', credentials)
     this.props.login(credentials);
   }
 
@@ -18,7 +23,7 @@ class Login extends React.Component {
     return (
       <KeyboardAvoidingView behavior='position' style={ styles.container }>
         <View style={ styles.logoContainer }>
-          <Image source={require('../../assets/images/logo.png')} style={ styles.logo } />
+          <Image source={require('../../../assets/images/logo.png')} style={ styles.logo } />
           <Text style={ styles.title }>Partner with your next training buddy, instructor, and more.</Text>
         </View>
         <View style={ styles.formContainer }>
@@ -38,7 +43,8 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: 300
   },
   logo: {
     height: 200,
@@ -57,9 +63,9 @@ const styles = StyleSheet.create({
 });
 
 const mapState = null;
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch, { navigation }) => ({
   login(credentials) {
-    dispatch(attemptLogin(credentials));
+    dispatch(attemptLogin(credentials, navigation));
   }
 });
 

@@ -4,14 +4,17 @@ import { AsyncStorage } from 'react-native';
 const GOT_USER = 'GOT_USER';
 const gotUser = user => ({ type: GOT_USER, user });
 
-export const attemptLogin = credentials => {
+export const attemptLogin = (credentials, navigation) => {
+  console.log('Thunk', credentials)
   return dispatch => {
-    return axios.post('http://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
+    return axios.post('http://192.168.1.6:3000/api/sessions', credentials)
+    // return axios.post('https://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
       .then(result => result.data)
       .then(token => {
         AsyncStorage.setItem('token', token);
         dispatch(getUserFromToken(token));
       })
+      .then(() => navigation.navigate('Home'))
       .catch(err => {
         AsyncStorage.removeItem('token');
         return err;
@@ -21,7 +24,8 @@ export const attemptLogin = credentials => {
 
 export const getUserFromToken = token => {
   return dispatch => {
-    return axios.get(`http://immense-escarpment-58025.herokuapp.com/api/sessions/${token}`)
+    return axios.get(`'http://192.168.1.6:3000/api/sessions/${token}`)
+    // return axios.get(`https://immense-escarpment-58025.herokuapp.com/api/sessions${token}`)
       .then(result => result.data)
       .then(user => {
         dispatch(gotUser(user));

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { Button } from 'react-native-elements';
-import { getOrganizationsFromServer } from '../store';
+import { getOrganizationsFromServer, createOrganizationRequestOnServer } from '../store';
 import { connect } from 'react-redux';
 
 class OrganizationInfo extends React.Component {
@@ -27,6 +27,7 @@ class OrganizationInfo extends React.Component {
   render() {
     console.log(this.state)
     const organization = this.props.navigation.getParam('organization');
+    const { createOrganizationRequest, user } = this.props;
     return (
       <ScrollView
         refreshControl={
@@ -62,7 +63,7 @@ class OrganizationInfo extends React.Component {
             raised
             buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
             title='Request to Join'
-            onPress={() => console.log('this will send a request')}
+            onPress={() => createOrganizationRequest({ userId: user.id, organizationId: organization.id })}
           />
         </View>
       </ScrollView>
@@ -77,12 +78,21 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatch = dispatch => {
+const mapState = ({ user, organizationRequests }) => {
+  console.log('OR:', organizationRequests)
   return {
-    loadOrganizations: () => dispatch(getOrganizationsFromServer())
+    user,
+    organizationRequests
   }
 }
 
-export default connect(null, mapDispatch)(OrganizationInfo);
+const mapDispatch = dispatch => {
+  return {
+    loadOrganizations: () => dispatch(getOrganizationsFromServer()),
+    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest))
+  }
+}
+
+export default connect(mapState, mapDispatch)(OrganizationInfo);
 
 

@@ -2,39 +2,70 @@ import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';
-import { getOrganizationsFromServer, getUserFromToken } from '../store';
+import { Asset, AppLoading } from 'expo';
+import { getOrganizationsFromServer, getUserFromToken, getOrganizationRequestsFromServer } from '../store';
 
 import Home from './Home.js';
-import Login from './login/Login';
 import OrganizationInfo from './OrganizationInfo';
+import ModalStack from './modals/ModalStack';
 
-const RootStack = createStackNavigator({
+const NavStack = createStackNavigator({
   Home: Home,
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      headerMode: 'none'
-    }
-  },
-  Details: OrganizationInfo
+  Details: OrganizationInfo,
 }, {
+  headerMode: 'screen',
   initialRouteName: 'Home'
 });
 
+const RootStack = createStackNavigator({
+  Modals: ModalStack,
+  Nav: NavStack
+}, {
+  initialRouteName: 'Nav',
+  headerMode: 'none'
+});
+
 class MainStack extends React.Component {
-  componentDidMount() {
-    const { getOrganizations, getUser } = this.props;
-    getOrganizations();
-    AsyncStorage.getItem('token')
+  constructor() {
+    super();
+    this.state = {
+      ready: false
+    };
+    this.asyncLoad = this.asyncLoad.bind(this);
+    this.loadApp = this.loadApp.bind(this);
+  }
+
+  asyncLoad() {
+    const { getOrganizations, getUser, getOrganizationRequests } = this.props;
+    return AsyncStorage.getItem('token')
       .then(token => {
         if (token) {
           getUser(token);
         }
       })
-      .catch(error => console.log(error));
+      .then(() => Asset.fromModule(
+        require('../assets/images/logo.png')
+      ).downloadAsync())
+      .then(() => getOrganizations())
+      .then(() => getOrganizationRequests())
+  }
+
+  loadApp() {
+    if(!this.state.ready) {
+      this.setState({ ready: true });
+    }
   }
 
   render() {
+    if(!this.state.ready) {
+      return (
+        <AppLoading
+          startAsync={ this.asyncLoad }
+          onFinish={ this.loadApp }
+          onError={ console.warn }
+        />
+      );
+    }
     return (
       <RootStack />
     );
@@ -48,7 +79,8 @@ const mapDispatch = dispatch => ({
   },
   getUser(token) {
     dispatch(getUserFromToken(token));
-  }
+  },
+  getOrganizationRequests: () => dispatch(getOrganizationRequestsFromServer())
 });
 
 export default connect(mapState, mapDispatch)(MainStack);

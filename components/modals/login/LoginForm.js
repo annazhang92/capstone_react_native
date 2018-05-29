@@ -22,6 +22,7 @@ export default class LoginForm extends React.Component {
   }
 
   handleChange(name, value) {
+    // console.log(name, value)
     this.setState({ [name]: value });
   }
 
@@ -39,6 +40,7 @@ export default class LoginForm extends React.Component {
     if(Object.keys(errors).length) {
       return;
     }
+    // console.log('submit:', this.state)
     this.props.login(this.state);
   }
 
