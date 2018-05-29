@@ -36,7 +36,7 @@ class MainStack extends React.Component {
   }
 
   asyncLoad() {
-    const { getOrganizations, getUser } = this.props;
+    const { getUser, getOrganizations } = this.props;
     return Promise.all([
       AsyncStorage.getItem('token')
         .then(token => {
@@ -44,8 +44,8 @@ class MainStack extends React.Component {
             return getUser(token);
           }
         }),
-      Asset.fromModule(require('../assets/images/logo.png')).downloadAsync(),
-      getOrganizations()
+      getOrganizations(),
+      Asset.fromModule(require('../assets/images/logo.png')).downloadAsync()
     ]);
   }
 
