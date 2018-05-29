@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl } from 'react-native';
+import { Text, View, ScrollView, Button, AsyncStorage } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
@@ -10,12 +10,6 @@ class Home extends React.Component {
     headerMode: 'float'
   }
 
-  constructor() {
-    super();
-    this.state = { refreshing: false }
-    this.onRefresh = this.onRefresh.bind(this);
-  }
-
   componentDidMount() {
     const { user, navigation } = this.props;
     if(!user.id) {
@@ -23,24 +17,12 @@ class Home extends React.Component {
     }
   }
 
-  onRefresh() {
-    this.setState({ refreshing: true })
-    this.props.getOrganizations()
-      .then(() => this.setState({ refreshing: false }))
-  }
-
   render() {
-    const { organizations, user } = this.props;
+    const { organizations, user, state } = this.props;
     const { navigate } = this.props.navigation;
+    console.log(state)
     return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={() => this.onRefresh()}
-          />
-        }
-      >
+      <ScrollView>
         <List>
           {
             organizations.map((organization, index) => (
@@ -63,7 +45,8 @@ class Home extends React.Component {
 
 const mapState = state => ({
   organizations: state.organizations,
-  user: state.user
+  user: state.user,
+  state: state
 });
 
 const mapDispatch = dispatch => ({
@@ -79,87 +62,85 @@ export default connect(mapState, mapDispatch)(Home);
 
 
 
-/*import React from 'react';
-import { Text, View, ScrollView, Button, RefreshControl, AsyncStorage } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
-import { connect } from 'react-redux';
-import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
-class Home extends React.Component {
-  static navigationOptions = {
-    title: 'Choose an Organization!',
-    headerMode: 'float'
-  }
+// import React from 'react';
+// import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl } from 'react-native';
+// import { List, ListItem } from 'react-native-elements';
+// import { connect } from 'react-redux';
+// import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
-  constructor() {
-    super();
-    this.state = { refreshing: false }
-    this.onRefresh = this.onRefresh.bind(this);
-  }
+// class Home extends React.Component {
+//   static navigationOptions = {
+//     title: 'Choose an Organization!',
+//     headerMode: 'float'
+//   }
 
-  componentDidMount() {
-    const { user, navigation } = this.props;
-    // console.log(user)
-    if(!user.id) {
-      navigation.navigate('Login');
-    }
-  }
+//   constructor() {
+//     super();
+//     this.state = { refreshing: false }
+//     this.onRefresh = this.onRefresh.bind(this);
+//   }
 
-  onRefresh() {
-    // console.log('refreshing')
-    // console.log(this.props.user)
-    // console.log(AsyncStorage.getItem('token').then(token => token))
-    this.setState({ refreshing: true })
-    this.props.loadOrganizations()
-      .then(() => this.setState({ refreshing: false }))
-  }
+//   componentDidMount() {
+//     const { user, navigation } = this.props;
+//     if(!user.id) {
+//       navigation.navigate('Login');
+//     }
+//   }
 
-  render() {
-    const { organizations, user } = this.props;
-    const { navigate } = this.props.navigation;
-    console.log(user)
-    return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={() => this.onRefresh()}
-          />
-        }
-      >
-        <List>
-          {
-            organizations.map((organization, index) => (
-              <ListItem
-                roundAvatar
-                avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
-                title={organization.name}
-                subtitle={organization.organization_type}
-                key={index}
-                onPress={() => navigate('Details', { organization })}
-              />
-            ))
-          }
-        </List>
-      </ScrollView>
-    );
-  }
-}
+//   onRefresh() {
+//     this.setState({ refreshing: true })
+//     this.props.getOrganizations()
+//       .then(() => this.setState({ refreshing: false }))
+//   }
 
-const mapState = state => ({
-  organizations: state.organizations,
-  user: state.user
-});
+//   render() {
+//     const { organizations, user, state } = this.props;
+//     const { navigate } = this.props.navigation;
+//     console.log(state)
+//     return (
+//       <ScrollView
+//         refreshControl={
+//           <RefreshControl
+//             refreshing={this.state.refreshing}
+//             onRefresh={() => this.onRefresh()}
+//           />
+//         }
+//       >
+//         <List>
+//           {
+//             organizations.map((organization, index) => (
+//               <ListItem
+//                 roundAvatar
+//                 avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
+//                 title={organization.name}
+//                 subtitle={organization.organization_type}
+//                 key={index}
+//                 onPress={() => navigate('Details', { organization })}
+//               />
+//             ))
+//           }
+//         </List>
+//       </ScrollView>
 
-const mapDispatch = dispatch => ({
-  getUser(token) {
-    dispatch(getUserFromToken(token));
-  },
-  loadOrganizations: () => dispatch(getOrganizationsFromServer()),
-  // loadOrganizationRequests: () => dispatch(getOrganizationsFromServer()),
-});
+//     );
+//   }
+// }
 
-export default connect(mapState, mapDispatch)(Home);
+// const mapState = state => ({
+//   organizations: state.organizations,
+//   user: state.user,
+//   state: state
+// });
 
+// const mapDispatch = dispatch => ({
+//   getOrganizations() {
+//     dispatch(getOrganizationsFromServer());
+//   },
+//   getUser(token) {
+//     dispatch(getUserFromToken(token));
+//   }
+// });
 
-*/
+// export default connect(mapState, mapDispatch)(Home);
+
