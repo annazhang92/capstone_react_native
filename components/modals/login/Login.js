@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { View, Image, StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { attemptLogin } from '../../../store';
 import LoginForm from './LoginForm';
@@ -28,6 +28,12 @@ class Login extends React.Component {
         <View style={ styles.formContainer }>
           <LoginForm login={ this.login } />
         </View>
+        <TouchableOpacity
+          style={ styles.buttonContainer }
+          onPress={ () => this.props.navigation.navigate('SignUp') }
+        >
+          <Text style={ styles.buttonText }>Sign Up</Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     );
   }
@@ -58,6 +64,16 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: 300
+  },
+  buttonContainer: {
+    backgroundColor: '#2980b9',
+    paddingVertical: 15,
+    borderRadius: 50,
+    marginBottom: 10
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFFFFF'
   }
 });
 

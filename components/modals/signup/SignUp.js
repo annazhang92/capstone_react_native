@@ -1,22 +1,21 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
-import { attemptLogin } from '../../../store';
-import LoginForm from './LoginForm';
+import { signup } from '../../../store';
+import SignUpForm from './SignUpForm';
 
-//NOT FINAL
-class Login extends React.Component {
+class SignUp extends React.Component {
   static navigationOptions = {
     headerMode: 'none'
   }
 
   constructor() {
     super();
-    this.login = this.login.bind(this);
+    this.signup = this.signup.bind(this);
   }
 
-  login(credentials) {
-    this.props.login(credentials);
+  signup(userInfo) {
+    this.props.signup(userInfo);
   }
 
   render() {
@@ -27,7 +26,7 @@ class Login extends React.Component {
           <Text style={ styles.title }>Partner with your next training buddy, instructor, and more.</Text>
         </View>
         <View style={ styles.formContainer }>
-          <LoginForm login={ this.login } />
+          <SignUpForm signup={ this.signup } navigation={ this.props.navigation } />
         </View>
       </KeyboardAvoidingView>
     );
@@ -64,9 +63,9 @@ const styles = StyleSheet.create({
 
 const mapState = null;
 const mapDispatch = (dispatch, { navigation }) => ({
-  login(credentials) {
-    dispatch(attemptLogin(credentials, navigation));
+  signup(userInfo) {
+    dispatch(signup(userInfo, navigation));
   }
 });
 
-export default connect(mapState, mapDispatch)(Login);
+export default connect(mapState, mapDispatch)(SignUp);

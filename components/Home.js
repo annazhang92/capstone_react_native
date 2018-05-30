@@ -18,9 +18,8 @@ class Home extends React.Component {
   }
 
   render() {
-    const { organizations, user, state } = this.props;
+    const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
-    console.log(state)
     return (
       <ScrollView>
         <List>
@@ -45,8 +44,7 @@ class Home extends React.Component {
 
 const mapState = state => ({
   organizations: state.organizations,
-  user: state.user,
-  state: state
+  user: state.user
 });
 
 const mapDispatch = dispatch => ({
