@@ -40,7 +40,7 @@ class MainStack extends React.Component {
     return Promise.all([
       AsyncStorage.getItem('token')
         .then(token => {
-          if(token) {
+          if (token) {
             return getUser(token);
           }
         }),

@@ -1,14 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
+import { createOrganizationRequestOnServer } from '../store';
 
-export default class OrganizationInfo extends React.Component {
+class OrganizationInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('organization').name
     }
   }
+
   render() {
+    const { user } = this.props;
     const organization = this.props.navigation.getParam('organization', 'no organization');
     return (
       <ScrollView>
@@ -38,13 +42,32 @@ export default class OrganizationInfo extends React.Component {
           raised
           buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
           title='Request to Join'
-          onPress={() => console.log('this will send a request')}
+          onPress={() => this.props.createOrganizationRequest({ userId: user.id, organizationId: organization.id })}
         />
       </View>
       </ScrollView>
     );
   }
 }
+
+const mapState = (state) => {
+  const organizationRequests = state.organizationRequests
+  const user = state.user
+  // console.log(state)
+  return {
+    user,
+    organizationRequests
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    loadOrganizations: () => dispatch(getOrganizationsFromServer()),
+    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest))
+  }
+}
+
+export default connect(mapState, mapDispatch)(OrganizationInfo);
 
 const styles = StyleSheet.create({
   container: {
