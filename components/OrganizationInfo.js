@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import { createOrganizationRequestOnServer } from '../store';
+import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer } from '../store';
 
 class OrganizationInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -11,64 +11,84 @@ class OrganizationInfo extends React.Component {
     }
   }
 
+  constructor() {
+    super();
+    this.state = { refreshing: false }
+    this.onRefresh = this.onRefresh.bind(this);
+  }
+
+  onRefresh() {
+    const { loadOrganizationsRequests } = this.props;
+    this.setState({ refreshing: true })
+    loadOrganizationsRequests()
+      .then(() => this.setState({ refreshing: false }))
+  }
+
   render() {
-    const { user, organization, ownRequest } = this.props;
+    const { user, organization, ownRequest, createOrganizationRequest } = this.props;
+    const { onRefresh } = this;
     return (
-      <ScrollView>
-      <View style={styles.image}>
-        { organization.image && <Image
-          style={{ width: 400, height: 275 }}
-          source={{ uri: organization.image }}
-        />}
-      </View>
-      <View style={styles.container}>
-        <Text h3 style={styles.text}>
-          {organization.name}
-        </Text>
-        <Text style={[ styles.text, { marginBottom: 20 } ]}>
-          ({organization.organization_type})
-        </Text>
-        <Text style={[ styles.text, { fontSize: 20 } ]}>
-          {organization.contact_phone}
-        </Text>
-        <Text style={styles.text}>
-          {organization.address}
-        </Text>
-        <Text style={styles.text}>
-          {organization.city}, {organization.state} {organization.zip}
-        </Text>
-        {
-          !ownRequest ? (
-            <Button
-              raised
-              buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
-              title='Request to Join'
-              onPress={() => {
-                // console.log({ userId: user.id, organizationId: organization.id })
-                this.props.createOrganizationRequest({ userId: user.id, organizationId: organization.id })
-              }}
-            />
-          ) : (
-            ownRequest.status === 'pending' ? (
-            <Button
-              raised
-              buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-              title='Request Pending'
-              onPress={() => console.log('this will check in a user')}
-              disabled={true}
-            />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => onRefresh()}
+          />
+        }
+      >
+        <View style={styles.image}>
+          { organization.image && <Image
+            style={{ width: 400, height: 275 }}
+            source={{ uri: organization.image }}
+          />}
+        </View>
+        <View style={styles.container}>
+          <Text h3 style={styles.text}>
+            {organization.name}
+          </Text>
+          <Text style={[ styles.text, { marginBottom: 20 } ]}>
+            ({organization.organization_type})
+          </Text>
+          <Text style={[ styles.text, { fontSize: 20 } ]}>
+            {organization.contact_phone}
+          </Text>
+          <Text style={styles.text}>
+            {organization.address}
+          </Text>
+          <Text style={styles.text}>
+            {organization.city}, {organization.state} {organization.zip}
+          </Text>
+          {
+            !ownRequest ? (
+              <Button
+                raised
+                buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
+                title='Request to Join'
+                onPress={() => {
+                  createOrganizationRequest({ userId: user.id, organizationId: organization.id })
+                }}
+              />
             ) : (
+              ownRequest.status === 'pending' ? (
               <Button
                 raised
                 buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-                title='Check In'
+                title='Request Pending'
                 onPress={() => console.log('this will check in a user')}
+                disabled={true}
               />
-            )
+              ) : (
+                <Button
+                  raised
+                  buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                  title='Check In'
+                  onPress={() => console.log('this will check in a user')}
+                />
+              )
 
-          )
-        }
-      </View>
+            )
+          }
+        </View>
       </ScrollView>
     );
   }
@@ -90,7 +110,7 @@ const mapState = ({ organizationRequests, user }, { navigation }) => {
 
 const mapDispatch = dispatch => {
   return {
-    loadOrganizations: () => dispatch(getOrganizationsFromServer()),
+    loadOrganizationsRequests: () => dispatch(getOrganizationRequestsFromServer()),
     createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest))
   }
 }
