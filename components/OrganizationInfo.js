@@ -59,7 +59,7 @@ class OrganizationInfo extends React.Component {
             {organization.city}, {organization.state} {organization.zip}
           </Text>
           {
-            !ownRequest ? (
+            !ownRequest && (
               <Button
                 raised
                 buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
@@ -68,26 +68,40 @@ class OrganizationInfo extends React.Component {
                   createOrganizationRequest({ userId: user.id, organizationId: organization.id })
                 }}
               />
-            ) : (
-              ownRequest.status === 'pending' ? (
+            )
+          }
+          {
+            ownRequest && ownRequest.status === 'pending' && (
               <Button
                 raised
                 buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
                 title='Request Pending'
-                onPress={() => console.log('this will check in a user')}
+                onPress={() => console.log('this should not click')}
                 disabled={true}
               />
-              ) : (
-                <Button
-                  raised
-                  buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-                  title='Check In'
-                  onPress={() => console.log('this will check in a user')}
-                />
-              )
-
             )
           }
+          {
+            ownRequest && ownRequest.status === 'accepted' && (
+              <Button
+                raised
+                buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                title='Check In'
+                onPress={() => console.log('this will allow a user to check in')}
+              />
+            )
+          }
+          {
+            ownRequest && ownRequest.status === 'declined' && (
+              <View>
+                <Text style={{ fontSize: 20, marginTop: 20, textAlign: 'center' }}>
+                  We're sorry, but you have been declined. Please call the number above or visit the front desk.
+                </Text>
+              </View>
+            )
+          }
+
+
         </View>
       </ScrollView>
     );
