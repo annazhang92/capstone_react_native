@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer } from '../store';
+import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser } from '../store';
 
 class OrganizationInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -15,6 +15,7 @@ class OrganizationInfo extends React.Component {
     super();
     this.state = { refreshing: false }
     this.onRefresh = this.onRefresh.bind(this);
+    this.checkInUser = this.checkInUser.bind(this);
   }
 
   onRefresh() {
@@ -24,9 +25,17 @@ class OrganizationInfo extends React.Component {
       .then(() => this.setState({ refreshing: false }))
   }
 
+  checkInUser(user, organization) {
+    const { updateUser } = this.props;
+    const { id, firstName, lastName, email, password, userStatus } = user;
+    const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
+    updateUser(updatedUser);
+  }
+
   render() {
     const { user, organization, ownRequest, createOrganizationRequest } = this.props;
-    const { onRefresh } = this;
+    const { onRefresh, checkInUser } = this;
+    console.log(user)
     return (
       <ScrollView
         refreshControl={
@@ -74,7 +83,7 @@ class OrganizationInfo extends React.Component {
             ownRequest && ownRequest.status === 'pending' && (
               <Button
                 raised
-                buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                buttonStyle={{ backgroundColor: 'grey', borderRadius: 10, marginTop: 15 }}
                 title='Request Pending'
                 onPress={() => console.log('this should not click')}
                 disabled={true}
@@ -87,7 +96,7 @@ class OrganizationInfo extends React.Component {
                 raised
                 buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
                 title='Check In'
-                onPress={() => console.log('this will allow a user to check in')}
+                onPress={() => checkInUser(user, organization)}
               />
             )
           }
@@ -100,8 +109,6 @@ class OrganizationInfo extends React.Component {
               </View>
             )
           }
-
-
         </View>
       </ScrollView>
     );
@@ -125,7 +132,12 @@ const mapState = ({ organizationRequests, user }, { navigation }) => {
 const mapDispatch = dispatch => {
   return {
     loadOrganizationsRequests: () => dispatch(getOrganizationRequestsFromServer()),
-    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest))
+    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest)),
+    updateUser: (user) => {
+      dispatch(updateUserOnServer(user))
+      dispatch(updateLoggedUser(user))
+    }
+
   }
 }
 

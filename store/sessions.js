@@ -50,6 +50,10 @@ export const getUserFromToken = token => {
   };
 };
 
+export const updateLoggedUser = (user) => {
+  return dispatch => dispatch(gotUser(user))
+}
+
 const store = (state = {}, action) => {
   switch (action.type) {
   case GOT_USER:
