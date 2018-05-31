@@ -18,7 +18,7 @@ export const getOrganizationRequestsFromServer = () => {
 export const createOrganizationRequestOnServer = (organizationRequest) => {
   return dispatch => {
     // return axios.post('http://172.16.25.67:3000/api/organizationRequests', organizationRequest)
-    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/organizationRequests')
+    return axios.post('https://immense-escarpment-58025.herokuapp.com/api/organizationRequests', organizationRequest)
       .then(result => result.data)
       .then(organizationRequest => dispatch(createOrganizationRequest(organizationRequest)));
   };
