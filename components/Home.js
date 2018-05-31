@@ -61,14 +61,8 @@ class Home extends React.Component {
   }
 }
 
-<<<<<<< HEAD
-const mapState = state => ({
-  organizations: state.organizations,
-  user: state.user
-=======
 const mapState = ({ organizations, user }) => ({
   organizations, user
->>>>>>> revised-requests
 });
 
 const mapDispatch = dispatch => ({
