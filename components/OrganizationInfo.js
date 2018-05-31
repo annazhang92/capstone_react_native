@@ -13,9 +13,13 @@ class OrganizationInfo extends React.Component {
 
   constructor() {
     super();
-    this.state = { refreshing: false }
+    this.state = {
+      refreshing: false,
+      checkedIn: false
+    }
     this.onRefresh = this.onRefresh.bind(this);
     this.checkInUser = this.checkInUser.bind(this);
+    this.checkOutUser = this.checkOutUser.bind(this);
   }
 
   onRefresh() {
@@ -29,12 +33,22 @@ class OrganizationInfo extends React.Component {
     const { updateUser } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
+    this.setState({ checkedIn: true })
+    updateUser(updatedUser);
+  }
+
+  checkOutUser(user) {
+    const { updateUser } = this.props;
+    const { id, firstName, lastName, email, password, userStatus } = user;
+    const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: null }
+    this.setState({ checkedIn: false })
     updateUser(updatedUser);
   }
 
   render() {
     const { user, organization, ownRequest, createOrganizationRequest } = this.props;
-    const { onRefresh, checkInUser } = this;
+    const { onRefresh, checkInUser, checkOutUser } = this;
+    const { checkedIn } = this.state;
     console.log(user)
     return (
       <ScrollView
@@ -91,13 +105,23 @@ class OrganizationInfo extends React.Component {
             )
           }
           {
-            ownRequest && ownRequest.status === 'accepted' && (
-              <Button
-                raised
-                buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-                title='Check In'
-                onPress={() => checkInUser(user, organization)}
-              />
+            ownRequest && ownRequest.status === 'accepted' && !checkedIn && (
+                <Button
+                  raised
+                  buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                  title='Check In'
+                  onPress={() => checkInUser(user, organization)}
+                />
+            )
+          }
+          {
+            ownRequest && ownRequest.status === 'accepted' && checkedIn && (
+                <Button
+                  raised
+                  buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
+                  title='Check Out'
+                  onPress={() => checkOutUser(user)}
+                />
             )
           }
           {
