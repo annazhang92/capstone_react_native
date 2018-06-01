@@ -12,11 +12,24 @@ class UserList extends Component {
       <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Checked in Users</Text>
         {
           ownUsers.map(user => (
-            <View key={user.id}>
-              <Text style={{ textAlign: 'center', fontSize: 18, marginTop: 20 }}>{user.fullName}</Text>
+            <View
+              key={user.id}
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                borderRadius: 10,
+                padding: 20,
+                margin: 10
+              }}>
+              <Text style={{ textAlign: 'center', fontSize: 18 }}>{user.fullName}</Text>
               <Button
                 onPress={() => console.log('send request')}
                 title='Send Request'
+                buttonStyle={{
+                  backgroundColor: 'blue',
+                  borderRadius: 10,
+                  marginTop: 15
+                }}
               />
             </View>
           ))
