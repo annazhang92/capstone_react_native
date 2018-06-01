@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';
 import { Asset, AppLoading } from 'expo';
-import { getOrganizationsFromServer, getUserFromToken } from '../store';
+import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer } from '../store';
 
 import Home from './Home.js';
 import OrganizationInfo from './OrganizationInfo';
@@ -36,7 +36,7 @@ class MainStack extends React.Component {
   }
 
   asyncLoad() {
-    const { getUser, getOrganizations } = this.props;
+    const { getUser, getOrganizations, getUserOrganizations, getUsers } = this.props;
     return Promise.all([
       AsyncStorage.getItem('token')
         .then(token => {
@@ -45,6 +45,8 @@ class MainStack extends React.Component {
           }
         }),
       getOrganizations(),
+      getUsers(),
+      getUserOrganizations(),
       Asset.fromModule(require('../assets/images/logo.png')).downloadAsync()
     ]);
   }
@@ -76,7 +78,9 @@ const mapDispatch = dispatch => ({
   },
   getUser(token) {
     return dispatch(getUserFromToken(token));
-  }
+  },
+  getUserOrganizations: () => dispatch(getUserOrganizationsFromServer()),
+  getUsers: () => dispatch(getUsersFromServer()),
 });
 
 export default connect(mapState, mapDispatch)(MainStack);

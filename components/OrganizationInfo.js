@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser } from '../store';
+import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser, getUsersFromServer } from '../store';
+
+import UserList from './UserList';
 
 class OrganizationInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -15,17 +17,24 @@ class OrganizationInfo extends React.Component {
     super();
     this.state = {
       refreshing: false,
-      checkedIn: false
+      // checkedIn: false,
+      // error: ''
     }
     this.onRefresh = this.onRefresh.bind(this);
     this.checkInUser = this.checkInUser.bind(this);
     this.checkOutUser = this.checkOutUser.bind(this);
   }
 
+  componentDidMount() {
+    this.props.loadUsers()
+  }
+
   onRefresh() {
-    const { loadOrganizationsRequests } = this.props;
+    const { loadOrganizationsRequests, loadUsers } = this.props;
     this.setState({ refreshing: true })
+    // loadUsers()
     loadOrganizationsRequests()
+      .then(() => loadUsers())
       .then(() => this.setState({ refreshing: false }))
   }
 
@@ -33,7 +42,7 @@ class OrganizationInfo extends React.Component {
     const { updateUser } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
-    this.setState({ checkedIn: true })
+    // this.setState({ checkedIn: true })
     updateUser(updatedUser);
   }
 
@@ -41,15 +50,16 @@ class OrganizationInfo extends React.Component {
     const { updateUser } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: null }
-    this.setState({ checkedIn: false })
+    // this.setState({ checkedIn: false })
     updateUser(updatedUser);
   }
 
   render() {
-    const { user, organization, ownRequest, createOrganizationRequest } = this.props;
+    const { user, organization, ownRequest, createOrganizationRequest, organizationRequests } = this.props;
     const { onRefresh, checkInUser, checkOutUser } = this;
     const { checkedIn } = this.state;
-    console.log(user)
+    // console.log(user)
+    // console.log('Error:', this.state.error)
     return (
       <ScrollView
         refreshControl={
@@ -88,6 +98,14 @@ class OrganizationInfo extends React.Component {
                 buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
                 title='Request to Join'
                 onPress={() => {
+                  // const ownRequest = organizationRequests.find(request=> {
+                    // return request.userId === user.id && request.organizationId === organization.id
+                  // })
+                  // console.log('organizationRequests', organizationRequests)
+                  // console.log('ownRequest:', ownRequest)
+                  // if(ownRequest) {
+                  //   return this.setState({ error: 'You have already sent a request to this organization' })
+                  // }
                   createOrganizationRequest({ userId: user.id, organizationId: organization.id })
                 }}
               />
@@ -105,7 +123,7 @@ class OrganizationInfo extends React.Component {
             )
           }
           {
-            ownRequest && ownRequest.status === 'accepted' && !checkedIn && (
+            ownRequest && ownRequest.status === 'accepted' && !user.checkedInId && (
                 <Button
                   raised
                   buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
@@ -115,7 +133,7 @@ class OrganizationInfo extends React.Component {
             )
           }
           {
-            ownRequest && ownRequest.status === 'accepted' && checkedIn && (
+            ownRequest && ownRequest.status === 'accepted' && user.checkedInId && (
                 <Button
                   raised
                   buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
@@ -133,6 +151,7 @@ class OrganizationInfo extends React.Component {
               </View>
             )
           }
+          { user.checkedInId && <UserList organization={organization} /> }
         </View>
       </ScrollView>
     );
@@ -144,7 +163,7 @@ const mapState = ({ organizationRequests, user }, { navigation }) => {
   const ownRequest = organizationRequests.find(request => {
     return request.userId === user.id && request.organizationId === organization.id
   })
-  console.log(ownRequest)
+  // console.log(ownRequest)
   return {
     user,
     ownRequest,
@@ -160,8 +179,8 @@ const mapDispatch = dispatch => {
     updateUser: (user) => {
       dispatch(updateUserOnServer(user))
       dispatch(updateLoggedUser(user))
-    }
-
+    },
+    loadUsers: () => dispatch(getUsersFromServer())
   }
 }
 
