@@ -9,7 +9,7 @@ class UserList extends Component {
     const { ownUsers } = this.props;
     return (
       <View>
-      <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Checked in Users</Text>
+      <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Pair Up!</Text>
         {
           ownUsers.map(user => (
             <View

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser, getUsersFromServer } from '../store';
+import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser, getUsersFromServer, getOrganizationsFromServer } from '../store';
 
 import UserList from './UserList';
 
@@ -30,11 +30,12 @@ class OrganizationInfo extends React.Component {
   }
 
   onRefresh() {
-    const { loadOrganizationsRequests, loadUsers } = this.props;
+    const { loadOrganizationsRequests, loadUsers, loadOrganizations } = this.props;
     this.setState({ refreshing: true })
     // loadUsers()
     loadOrganizationsRequests()
-      .then(() => loadUsers())
+      // .then(() => loadUsers())
+      // .then(() => loadOrganizations())
       .then(() => this.setState({ refreshing: false }))
   }
 
@@ -180,7 +181,8 @@ const mapDispatch = dispatch => {
       dispatch(updateUserOnServer(user))
       dispatch(updateLoggedUser(user))
     },
-    loadUsers: () => dispatch(getUsersFromServer())
+    loadUsers: () => dispatch(getUsersFromServer()),
+    loadOrganizations: () => dispatch(getOrganizationsFromServer())
   }
 }
 
