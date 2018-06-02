@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-
+import productionUrl from './productionUrl';
+import socket from './sockets';
 const GOT_USER = 'GOT_USER';
 const gotUser = user => ({ type: GOT_USER, user });
 
 export const attemptLogin = (credentials, navigation) => {
   return dispatch => {
-    return axios.post('http://immense-escarpment-58025.herokuapp.com/api/sessions', credentials)
+    return axios.post(productionUrl + '/api/sessions', credentials)
       .then(result => result.data)
       .then(token => {
         AsyncStorage.setItem('token', token);
@@ -22,7 +23,7 @@ export const attemptLogin = (credentials, navigation) => {
 
 export const signup = (userInfo, navigation) => {
   return dispatch => {
-    return axios.post('http://immense-escarpment-58025.herokuapp.com/api/sessions/signup', userInfo)
+    return axios.post(productionUrl + '/api/sessions/signup', userInfo)
       .then(result => result.data)
       .then(token => {
         AsyncStorage.setItem('token', token);
@@ -38,10 +39,11 @@ export const signup = (userInfo, navigation) => {
 
 export const getUserFromToken = token => {
   return dispatch => {
-    return axios.get(`http://immense-escarpment-58025.herokuapp.com/api/sessions/${token}`)
+    return axios.get(productionUrl + `/api/sessions/${token}`)
       .then(result => result.data)
       .then(user => {
         dispatch(gotUser(user));
+        socket.emit('mobileOnline', user.id);
       })
       .catch(err => {
         AsyncStorage.removeItem('token');
