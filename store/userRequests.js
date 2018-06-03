@@ -25,11 +25,15 @@ export const createUserRequestOnServer = (userRequest) => {
 }
 
 export const updateUserRequestOnServer = (userRequest) => {
+  console.log('THUNK (before)', userRequest)
   const { id } = userRequest;
   return dispatch => {
-    return axios.put(`https://immense-escarpment-58025.herokuapp.com/api/userRequests/${id}`)
+    return axios.put(`https://immense-escarpment-58025.herokuapp.com/api/userRequests/${id}`, userRequest)
       .then(result => result.data)
-      .then(userRequest => dispatch(updateUserRequest(userRequest)))
+      .then(userRequest => {
+        console.log('THUNK (after)', userRequest)
+        dispatch(updateUserRequest(userRequest))
+      })
   }
 }
 
