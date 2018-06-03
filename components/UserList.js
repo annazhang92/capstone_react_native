@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
+import { createUserRequestOnServer } from '../store';
 
 class UserList extends Component {
 
   render() {
-    const { ownUsers } = this.props;
+    const { loggedUser, ownUsers, createRequest } = this.props;
     return (
       <View>
       <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Pair Up!</Text>
@@ -23,7 +24,7 @@ class UserList extends Component {
               }}>
               <Text style={{ textAlign: 'center', fontSize: 18 }}>{user.fullName}</Text>
               <Button
-                onPress={() => console.log('send request')}
+                onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id })}
                 title='Send Request'
                 buttonStyle={{
                   backgroundColor: 'blue',
@@ -48,9 +49,17 @@ const mapState = ({ user, users, userOrganizations }, { organization }) => {
     })
     return memo;
   }, [])
+  const loggedUser = user;
   return {
-    ownUsers
+    ownUsers,
+    loggedUser
   }
 }
 
-export default connect(mapState)(UserList)
+const mapDispatch = (dispatch) => {
+  return {
+    createRequest: (request) => dispatch(createUserRequestOnServer(request))
+  }
+}
+
+export default connect(mapState, mapDispatch)(UserList)
