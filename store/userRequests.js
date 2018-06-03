@@ -37,7 +37,7 @@ const store = (state = [], action) => {
   let userRequests;
   switch (action.type) {
     case GET_USER_REQUESTS:
-      return actions.userRequests;
+      return action.userRequests;
     case CREATE_USER_REQUEST:
       return [ ...state, action.userRequest ];
     case UPDATE_USER_REQUEST:

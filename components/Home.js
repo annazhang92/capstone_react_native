@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
-  static navigationOptions = {
-    title: 'Choose an Organization!',
-    headerMode: 'float'
-  }
+  // static navigationOptions = {
+    // title: 'Choose an Organization!',
+    // headerMode: 'float'
+  // }
 
   constructor() {
     super();

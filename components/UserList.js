@@ -23,15 +23,18 @@ class UserList extends Component {
                 margin: 10
               }}>
               <Text style={{ textAlign: 'center', fontSize: 18 }}>{user.fullName}</Text>
-              <Button
-                onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id })}
-                title='Send Request'
-                buttonStyle={{
-                  backgroundColor: 'blue',
-                  borderRadius: 10,
-                  marginTop: 15
-                }}
-              />
+              {
+                <Button
+                  onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id })}
+                  title='Send Request'
+                  buttonStyle={{
+                    backgroundColor: 'blue',
+                    borderRadius: 10,
+                    marginTop: 15
+                  }}
+                />
+              }
+
             </View>
           ))
         }

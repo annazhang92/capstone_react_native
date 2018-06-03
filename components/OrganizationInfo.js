@@ -99,14 +99,6 @@ class OrganizationInfo extends React.Component {
                 buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
                 title='Request to Join'
                 onPress={() => {
-                  // const ownRequest = organizationRequests.find(request=> {
-                    // return request.userId === user.id && request.organizationId === organization.id
-                  // })
-                  // console.log('organizationRequests', organizationRequests)
-                  // console.log('ownRequest:', ownRequest)
-                  // if(ownRequest) {
-                  //   return this.setState({ error: 'You have already sent a request to this organization' })
-                  // }
                   createOrganizationRequest({ userId: user.id, organizationId: organization.id })
                 }}
               />
@@ -152,7 +144,7 @@ class OrganizationInfo extends React.Component {
               </View>
             )
           }
-          { user.checkedInId && <UserList organization={organization} /> }
+          { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
         </View>
       </ScrollView>
     );
@@ -164,7 +156,6 @@ const mapState = ({ organizationRequests, user }, { navigation }) => {
   const ownRequest = organizationRequests.find(request => {
     return request.userId === user.id && request.organizationId === organization.id
   })
-  // console.log(ownRequest)
   return {
     user,
     ownRequest,
