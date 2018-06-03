@@ -1,7 +1,7 @@
 import React from 'react';
 import { AsyncStorage, View } from 'react-native';
 import { connect } from 'react-redux';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
 import { Asset, AppLoading } from 'expo';
 import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer } from '../store';
 
@@ -10,7 +10,7 @@ import OrganizationInfo from './OrganizationInfo';
 import UserRequests from './UserRequests';
 import ModalStack from './modals/ModalStack';
 
-const TabNavigator = createBottomTabNavigator({
+const TabNavigator = createMaterialTopTabNavigator({
   Organizations: {
     screen: Home,
     // navigationOptions: ({ navigation }) => ({
@@ -24,7 +24,7 @@ const TabNavigator = createBottomTabNavigator({
       activeTintColor: '#02A4FF',
       inactiveTintColor: 'grey',
       labelStyle: {
-        fontSize: 20,
+        fontSize: 16,
       },
       style: {
         backgroundColor: '#fff',
