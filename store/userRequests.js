@@ -1,16 +1,17 @@
 import axios from 'axios';
+import productionUrl from './productionUrl';
 
 const GET_USER_REQUESTS = 'GET_USER_REQUESTS';
 const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
 const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 
-getUserRequests = (userRequests) => ({ type: GET_USER_REQUESTS, userRequests });
-createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
-updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
+const getUserRequests = (userRequests) => ({ type: GET_USER_REQUESTS, userRequests });
+const createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
+const updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
 
 export const getUserRequestsFromServer = () => {
   return dispatch => {
-    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/userRequests')
+    return axios.get(productionUrl + '/api/userRequests')
       .then(result => result.data)
       .then(userRequests => dispatch(getUserRequests(userRequests)))
   }
@@ -18,7 +19,7 @@ export const getUserRequestsFromServer = () => {
 
 export const createUserRequestOnServer = (userRequest) => {
   return dispatch => {
-    return axios.post('https://immense-escarpment-58025.herokuapp.com/api/userRequests', userRequest)
+    return axios.post(productionUrl + '/api/userRequests', userRequest)
       .then(result => result.data)
       .then(userRequest => dispatch(createUserRequest(userRequest)))
   }
@@ -28,7 +29,7 @@ export const updateUserRequestOnServer = (userRequest) => {
   console.log('THUNK (before)', userRequest)
   const { id } = userRequest;
   return dispatch => {
-    return axios.put(`https://immense-escarpment-58025.herokuapp.com/api/userRequests/${id}`, userRequest)
+    return axios.put(productionUrl + `/api/userRequests/${id}`, userRequest)
       .then(result => result.data)
       .then(userRequest => {
         console.log('THUNK (after)', userRequest)

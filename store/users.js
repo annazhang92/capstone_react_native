@@ -1,4 +1,5 @@
 import axios from 'axios';
+import productionUrl from './productionUrl';
 
 const GET_USERS = 'GET_USERS'
 const UPDATE_USER = 'UPDATE_USER';
@@ -8,7 +9,7 @@ const updateUser = user => ({ type: UPDATE_USER, user });
 
 export const getUsersFromServer = () => {
   return dispatch => {
-    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/users')
+    return axios.get(productionUrl + '/api/users')
       .then(result => result.data)
       .then(users => dispatch(getUsers(users)))
   }
@@ -17,7 +18,7 @@ export const getUsersFromServer = () => {
 export const updateUserOnServer = (user) => {
   const { id } = user;
   return dispatch => {
-    return axios.put(`https://immense-escarpment-58025.herokuapp.com/api/users/${id}`, user)
+    return axios.put(productionUrl + `/api/users/${id}`, user)
       .then(result => result.data)
       .then(user => dispatch(updateUser(user)));
   };

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import productionUrl from './productionUrl';
 
 const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 
@@ -6,7 +7,7 @@ const getUserOrganizations = (userOrganizations) => ({ type: GET_USER_ORGANIZATI
 
 export const getUserOrganizationsFromServer = () => {
   return dispatch => {
-    return axios.get('https://immense-escarpment-58025.herokuapp.com/api/userOrganizations')
+    return axios.get(productionUrl + '/api/userOrganizations')
       .then(result => result.data)
       .then(userOrganizations => dispatch(getUserOrganizations(userOrganizations)))
   }
