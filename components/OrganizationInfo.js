@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer } from '../store';
+import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser, getUsersFromServer, getOrganizationsFromServer } from '../store';
+
+import UserList from './UserList';
 
 class OrganizationInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -13,20 +15,52 @@ class OrganizationInfo extends React.Component {
 
   constructor() {
     super();
-    this.state = { refreshing: false }
+    this.state = {
+      refreshing: false,
+      // checkedIn: false,
+      // error: ''
+    }
     this.onRefresh = this.onRefresh.bind(this);
+    this.checkInUser = this.checkInUser.bind(this);
+    this.checkOutUser = this.checkOutUser.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.loadUsers()
   }
 
   onRefresh() {
-    const { loadOrganizationsRequests } = this.props;
+    const { loadOrganizationsRequests, loadUsers, loadOrganizations } = this.props;
     this.setState({ refreshing: true })
+    // loadUsers()
     loadOrganizationsRequests()
+      // .then(() => loadUsers())
+      // .then(() => loadOrganizations())
       .then(() => this.setState({ refreshing: false }))
   }
 
+  checkInUser(user, organization) {
+    const { updateUser } = this.props;
+    const { id, firstName, lastName, email, password, userStatus } = user;
+    const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
+    // this.setState({ checkedIn: true })
+    updateUser(updatedUser);
+  }
+
+  checkOutUser(user) {
+    const { updateUser } = this.props;
+    const { id, firstName, lastName, email, password, userStatus } = user;
+    const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: null }
+    // this.setState({ checkedIn: false })
+    updateUser(updatedUser);
+  }
+
   render() {
-    const { user, organization, ownRequest, createOrganizationRequest } = this.props;
-    const { onRefresh } = this;
+    const { user, organization, ownRequest, createOrganizationRequest, organizationRequests } = this.props;
+    const { onRefresh, checkInUser, checkOutUser } = this;
+    const { checkedIn } = this.state;
+    // console.log(user)
+    // console.log('Error:', this.state.error)
     return (
       <ScrollView
         refreshControl={
@@ -74,7 +108,7 @@ class OrganizationInfo extends React.Component {
             ownRequest && ownRequest.status === 'pending' && (
               <Button
                 raised
-                buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                buttonStyle={{ backgroundColor: 'grey', borderRadius: 10, marginTop: 15 }}
                 title='Request Pending'
                 onPress={() => console.log('this should not click')}
                 disabled={true}
@@ -82,13 +116,23 @@ class OrganizationInfo extends React.Component {
             )
           }
           {
-            ownRequest && ownRequest.status === 'accepted' && (
-              <Button
-                raised
-                buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-                title='Check In'
-                onPress={() => console.log('this will allow a user to check in')}
-              />
+            ownRequest && ownRequest.status === 'accepted' && !user.checkedInId && (
+                <Button
+                  raised
+                  buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                  title='Check In'
+                  onPress={() => checkInUser(user, organization)}
+                />
+            )
+          }
+          {
+            ownRequest && ownRequest.status === 'accepted' && user.checkedInId && (
+                <Button
+                  raised
+                  buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
+                  title='Check Out'
+                  onPress={() => checkOutUser(user)}
+                />
             )
           }
           {
@@ -100,8 +144,7 @@ class OrganizationInfo extends React.Component {
               </View>
             )
           }
-
-
+          { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
         </View>
       </ScrollView>
     );
@@ -113,7 +156,6 @@ const mapState = ({ organizationRequests, user }, { navigation }) => {
   const ownRequest = organizationRequests.find(request => {
     return request.userId === user.id && request.organizationId === organization.id
   })
-  console.log(ownRequest)
   return {
     user,
     ownRequest,
@@ -125,7 +167,13 @@ const mapState = ({ organizationRequests, user }, { navigation }) => {
 const mapDispatch = dispatch => {
   return {
     loadOrganizationsRequests: () => dispatch(getOrganizationRequestsFromServer()),
-    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest))
+    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest)),
+    updateUser: (user) => {
+      dispatch(updateUserOnServer(user))
+      dispatch(updateLoggedUser(user))
+    },
+    loadUsers: () => dispatch(getUsersFromServer()),
+    loadOrganizations: () => dispatch(getOrganizationsFromServer())
   }
 }
 
@@ -143,113 +191,3 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   }
 });
-
-
-
-
-
-/*import React from 'react';
-import { Text, View, StyleSheet, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
-import { Button } from 'react-native-elements';
-import { getOrganizationsFromServer, createOrganizationRequestOnServer } from '../store';
-import { connect } from 'react-redux';
-
-class OrganizationInfo extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('organization').name
-    }
-  }
-
-  constructor() {
-    super();
-    this.state = {
-      refreshing: false,
-    }
-    this.onRefresh = this.onRefresh.bind(this);
-  }
-
-  onRefresh() {
-    this.setState({ refreshing: true })
-    this.props.loadOrganizations()
-      .then(() => this.setState({ refreshing: false }))
-  }
-
-  render() {
-    // console.log(this.state)
-    const organization = this.props.navigation.getParam('organization');
-    const { createOrganizationRequest, user } = this.props;
-    // const { user } = this.state;
-    console.log(user)
-    return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={() => this.onRefresh()}
-          />
-        }
-      >
-        <View style={styles.container}>
-          <Text style={{ fontSize: 35, textAlign: 'left' }}>
-            {organization.name}
-          </Text>
-          <Text style={{ fontSize: 25, textAlign: 'left', marginBottom: 20 }}>
-            ({organization.organization_type})
-          </Text>
-          <Text style={{ fontSize: 30, textAlign: 'left' }}>
-            {organization.address}
-          </Text>
-          <Text style={{ fontSize: 22, textAlign: 'left' }}>
-            {organization.city}, {organization.state} {organization.zip}
-          </Text>
-          <Text style={{ fontSize: 22, textAlign: 'left' }}>
-            {organization.contact_phone}
-          </Text>
-          <Button
-            raised
-            buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-            title='Check In'
-            onPress={() => console.log('this will check in a user')}
-          />
-          <Button
-            raised
-            buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
-            title='Request to Join'
-            onPress={() => createOrganizationRequest({ userId: user.id, organizationId: organization.id })}
-            // onPress={() => console.log('this will send a request')}
-          />
-        </View>
-      </ScrollView>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20
-  }
-});
-
-const mapState = (state) => {
-  const organizationRequests = state.organizationRequests
-  const user = state.user
-  // console.log(state)
-  return {
-    user,
-    organizationRequests
-  }
-}
-
-const mapDispatch = dispatch => {
-  return {
-    loadOrganizations: () => dispatch(getOrganizationsFromServer()),
-    createOrganizationRequest: (organizationRequest) => dispatch(createOrganizationRequestOnServer(organizationRequest))
-  }
-}
-
-export default connect(mapState, mapDispatch)(OrganizationInfo);
-
-
-*/

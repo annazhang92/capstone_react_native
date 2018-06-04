@@ -8,7 +8,6 @@ const createOrganizationRequest = organizationRequest => ({ type: CREATE_ORGANIZ
 
 export const getOrganizationRequestsFromServer = () => {
   return dispatch => {
-    // return axios.get('http://172.16.25.67:3000/api/organizationRequests')
     return axios.get(productionUrl + '/api/organizationRequests')
       .then(result => result.data)
       .then(organizationRequests => dispatch(getOrganizationRequests(organizationRequests)));
@@ -17,7 +16,6 @@ export const getOrganizationRequestsFromServer = () => {
 
 export const createOrganizationRequestOnServer = (organizationRequest) => {
   return dispatch => {
-    // return axios.post('http://172.16.25.67:3000/api/organizationRequests', organizationRequest)
     return axios.post(productionUrl + '/api/organizationRequests', organizationRequest)
       .then(result => result.data)
       .then(organizationRequest => dispatch(createOrganizationRequest(organizationRequest)));
