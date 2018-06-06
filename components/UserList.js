@@ -7,13 +7,15 @@ import { createUserRequestOnServer } from '../store';
 class UserList extends Component {
 
   render() {
-    const { loggedUser, ownUsers, createRequest, userRequests } = this.props;
+    const { loggedUser, ownUsers, createRequest, userRequests, organization } = this.props;
     return (
       <View>
       <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Pair Up!</Text>
         {
           ownUsers.map(user => {
-            const requestSent = !!userRequests.find(request => request.requesterId === loggedUser.id && request.responderId === user.id)
+            const requestSent = !!(userRequests.find(request => request.requesterId === loggedUser.id && request.responderId === user.id && request.organizationId === organization.id))
+            console.log(requestSent)
+            console.log(userRequests.length)
             return (
               <View
                 key={user.id}
@@ -27,7 +29,7 @@ class UserList extends Component {
                 <Text style={{ textAlign: 'center', fontSize: 18 }}>{user.fullName}</Text>
                 {
                   <Button
-                    onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id })}
+                    onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id, organizationId: organization.id })}
                     title='Send Request'
                     buttonStyle={{
                       backgroundColor: 'blue',
@@ -37,7 +39,6 @@ class UserList extends Component {
                     disabled={requestSent}
                   />
                 }
-
               </View>
             )
           })
@@ -60,13 +61,17 @@ const mapState = ({ user, users, userOrganizations, userRequests }, { organizati
   return {
     ownUsers,
     loggedUser,
-    userRequests
+    userRequests,
+    organization
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    createRequest: (request) => dispatch(createUserRequestOnServer(request))
+    createRequest: (request) => {
+      // console.log(request);
+      dispatch(createUserRequestOnServer(request))
+    }
   }
 }
 
