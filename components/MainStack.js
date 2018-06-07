@@ -13,14 +13,14 @@ import ModalStack from './modals/ModalStack';
 const TabNavigator = createMaterialTopTabNavigator({
   Organizations: {
     screen: Home,
-    // navigationOptions: ({ navigation }) => ({
-    //   title: 'Home',
-    // })
   },
-  Requests: UserRequests,
+  Requests: {
+    screen: UserRequests,
+  }
 }, {
     headerMode: 'none',
     tabBarOptions: {
+      // scrollEnabled: true,
       activeTintColor: '#02A4FF',
       inactiveTintColor: 'grey',
       labelStyle: {

@@ -33,6 +33,7 @@ class Home extends React.Component {
   render() {
     const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
+    console.log(user);
     return (
       <ScrollView
         refreshControl={
