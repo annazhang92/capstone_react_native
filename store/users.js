@@ -5,7 +5,7 @@ const GET_USERS = 'GET_USERS'
 const UPDATE_USER = 'UPDATE_USER';
 
 const getUsers = users => ({ type: GET_USERS, users });
-const updateUser = user => ({ type: UPDATE_USER, user });
+export const updateUser = user => ({ type: UPDATE_USER, user });
 
 export const getUsersFromServer = () => {
   return dispatch => {
