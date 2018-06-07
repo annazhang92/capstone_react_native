@@ -34,7 +34,7 @@ class OrganizationInfo extends React.Component {
     this.setState({ refreshing: true })
     // loadUsers()
     loadOrganizationsRequests()
-      // .then(() => loadUsers())
+      .then(() => loadUsers())
       // .then(() => loadOrganizations())
       .then(() => this.setState({ refreshing: false }))
   }

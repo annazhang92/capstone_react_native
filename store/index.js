@@ -6,7 +6,7 @@ import user from './sessions';
 import users from './users';
 import organizationRequests, { updateOrganizationRequest } from './organizationRequests';
 import userOrganizations from './userOrganizations';
-import userRequests from './userRequests';
+import userRequests, { createUserRequest, updateUserRequest } from './userRequests';
 
 const middleware = applyMiddleware(thunk);
 const reducers = combineReducers({ organizations, user, users, organizationRequests, userOrganizations, userRequests });
@@ -15,6 +15,14 @@ const store = createStore(reducers, middleware);
 
 socket.on('updatedOrganizationRequest', organizationRequest => {
   store.dispatch(updateOrganizationRequest(organizationRequest));
+});
+
+socket.on('newUserRequest', userRequest => {
+  store.dispatch(createUserRequest(userRequest));
+});
+
+socket.on('updatedUserRequest', userRequest => {
+  store.dispatch(updateUserRequest(userRequest));
 });
 
 export default store;
