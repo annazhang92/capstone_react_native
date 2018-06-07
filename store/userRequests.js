@@ -6,7 +6,7 @@ const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
 const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 
 const getUserRequests = (userRequests) => ({ type: GET_USER_REQUESTS, userRequests });
-const createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
+export const createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
 const updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
 
 export const getUserRequestsFromServer = () => {
@@ -26,13 +26,11 @@ export const createUserRequestOnServer = (userRequest) => {
 }
 
 export const updateUserRequestOnServer = (userRequest) => {
-  console.log('THUNK (before)', userRequest)
   const { id } = userRequest;
   return dispatch => {
     return axios.put(productionUrl + `/api/userRequests/${id}`, userRequest)
       .then(result => result.data)
       .then(userRequest => {
-        console.log('THUNK (after)', userRequest)
         dispatch(updateUserRequest(userRequest))
       })
   }
