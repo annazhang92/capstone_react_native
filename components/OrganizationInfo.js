@@ -143,7 +143,7 @@ class OrganizationInfo extends React.Component {
                   buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
                   title='Edit Stats'
                   // onPress={() => console.log('edit descriptions')}
-                  onPress={() => this.props.navigation.navigate('Descriptions')}
+                  onPress={() => this.props.navigation.navigate('Descriptions', { organization })}
                 />
 
           { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
