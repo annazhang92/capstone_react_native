@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Text, Button } from 'react-native-elements'
-import { updateUserRequestOnServer } from '../store';
+import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
   // static navigationOptions = ({ navigation }) => {
   //   title: `REQUESTS ()`
   // }
   render() {
-    const { user, users, receivedRequests, updateUserRequest } = this.props;
+    const { user, users, receivedRequests, updateUserRequest, deleteUserRequest } = this.props;
     return (
       <View>
         <Text h3 style={{ textAlign: 'center', marginBottom: 20 }}>User Requests</Text>
@@ -29,20 +29,33 @@ class UserRequests extends Component {
                 }}
               >
                 <Text style={{ textAlign: 'center', fontSize: 18 }}>{requester.fullName} wants to Pair Up!</Text>
-                <Button
-                  raised
-                  buttonStyle={{ backgroundColor: 'blue', borderRadius: 10, marginTop: 15 }}
-                  title='Accept'
-                  disabled={ status === 'accepted' }
-                  onPress={ () => updateUserRequest({ id, requesterId, responderId, organizationId, status: 'accepted' }) }
-                />
-                <Button
-                  raised
-                  buttonStyle={{ backgroundColor: 'orange', borderRadius: 10, marginTop: 15 }}
-                  title='Decline'
-                  disabled={ status === 'declined'}
-                  onPress={() => updateUserRequest({ id, requesterId, responderId, organizationId, status: 'declined' })}
-                />
+
+                { status === 'pending' &&
+                  <View>
+                    <Button
+                      raised
+                      buttonStyle={{ backgroundColor: 'blue', borderRadius: 10, marginTop: 15 }}
+                      title='Accept'
+                      onPress={ () => updateUserRequest({ id, requesterId, responderId, organizationId, status: 'accepted' }) }
+                    />
+                    <Button
+                      raised
+                      buttonStyle={{ backgroundColor: 'orange', borderRadius: 10, marginTop: 15 }}
+                      title='Decline'
+                      onPress={() => deleteUserRequest(request.id)}
+                    />
+                  </View>
+                }
+                {
+                  status === 'accepted' &&
+                    <Button
+                      raised
+                      buttonStyle={{ backgroundColor: 'orange', borderRadius: 10, marginTop: 15 }}
+                      title='Chat'
+                      onPress={() => console.log('CHAT!')}
+                    />
+                }
+
               </View>
             );
           })
@@ -64,10 +77,8 @@ const mapState = ({ user, users, userRequests }) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    updateUserRequest: (userRequest) => {
-      // console.log(userRequest)
-      dispatch(updateUserRequestOnServer(userRequest))
-    }
+    updateUserRequest: (userRequest) => dispatch(updateUserRequestOnServer(userRequest)),
+    deleteUserRequest: (id) => dispatch(deleteUserRequestFromServer(id))
   }
 }
 

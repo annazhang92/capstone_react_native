@@ -4,10 +4,12 @@ import productionUrl from './productionUrl';
 const GET_USER_REQUESTS = 'GET_USER_REQUESTS';
 const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
 const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
+const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
 
 const getUserRequests = (userRequests) => ({ type: GET_USER_REQUESTS, userRequests });
 export const createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
 export const updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
+const deleteUserRequest = (id) => ({ type: DELETE_USER_REQUEST, id })
 
 export const getUserRequestsFromServer = () => {
   return dispatch => {
@@ -36,6 +38,13 @@ export const updateUserRequestOnServer = (userRequest) => {
   }
 }
 
+export const deleteUserRequestFromServer = (id) => {
+  return dispatch => {
+    return axios.delete(productionUrl + `/api/userRequests/${id}`)
+      .then(() => dispatch(deleteUserRequest(id)))
+  }
+}
+
 const store = (state = [], action) => {
   let userRequests;
   switch (action.type) {
@@ -46,6 +55,8 @@ const store = (state = [], action) => {
     case UPDATE_USER_REQUEST:
       userRequests = state.filter(request => request.id !== action.userRequest.id);
       return [ ...userRequests, action.userRequest ];
+    case DELETE_USER_REQUEST:
+      return state.filter(request => request.id !== action.userRequest.id);
     default:
       return state;
   }
