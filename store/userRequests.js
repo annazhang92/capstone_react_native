@@ -56,7 +56,7 @@ const store = (state = [], action) => {
       userRequests = state.filter(request => request.id !== action.userRequest.id);
       return [ ...userRequests, action.userRequest ];
     case DELETE_USER_REQUEST:
-      return state.filter(request => request.id !== action.userRequest.id);
+      return state.filter(request => request.id !== action.id);
     default:
       return state;
   }
