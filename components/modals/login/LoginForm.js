@@ -66,6 +66,7 @@ export default class LoginForm extends React.Component {
           placeholderTextColor='rgba(255, 255, 255, 0.7)'
           returnKeyType='go'
           secureTextEntry
+          autoCapitalize='none'
           style={ styles.input }
           ref={ input => this.passwordInput = input}
         />

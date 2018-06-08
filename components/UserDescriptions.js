@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
+
+import SubmitDescription from './SubmitDescription';
 
 class UserDescriptions extends Component {
   render() {
@@ -10,7 +12,9 @@ class UserDescriptions extends Component {
         <Text>User Descriptions</Text>
         {
           orgForms.map(form => (
-            <Text key={form.id}>{form.name}</Text>
+            <View key={form.id}>
+              <SubmitDescription form={form} />
+            </View>
           ))
         }
       </View>
@@ -28,3 +32,14 @@ const mapState = ({ user, description, forms }, { navigation }) => {
 }
 
 export default connect(mapState)(UserDescriptions);
+
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    backgroundColor: 'rgb(255, 255, 255)',
+    marginBottom: 20,
+    borderRadius: 50,
+    color: 'black',
+    paddingHorizontal: 10
+  }
+});
