@@ -7,7 +7,7 @@ const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 
 const getUserRequests = (userRequests) => ({ type: GET_USER_REQUESTS, userRequests });
 export const createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
-const updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
+export const updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
 
 export const getUserRequestsFromServer = () => {
   return dispatch => {

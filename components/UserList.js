@@ -48,15 +48,8 @@ class UserList extends Component {
   }
 }
 
-const mapState = ({ user, users, userOrganizations, userRequests }, { organization }) => {
-  const ownUsers = userOrganizations.reduce((memo, userOrg) => {
-    users.forEach(otherUser => {
-      if (userOrg.userId === otherUser.id && userOrg.organizationId === organization.id && user.id !== otherUser.id) {
-        memo.push(otherUser);
-      }
-    })
-    return memo;
-  }, [])
+const mapState = ({ user, users, userRequests }, { organization }) => {
+  const ownUsers = users.filter(ownUser => ownUser.checkedInId === organization.id && ownUser.id !== user.id);
   const loggedUser = user;
   return {
     ownUsers,

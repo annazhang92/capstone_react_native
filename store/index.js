@@ -22,6 +22,7 @@ socket.on('newUserRequest', userRequest => {
 });
 
 socket.on('updatedUser', user => {
+  console.log('UPDATE USER SOCKET', user)
   store.dispatch(updateUser(user));
 });
 

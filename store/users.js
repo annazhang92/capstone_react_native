@@ -25,11 +25,13 @@ export const updateUserOnServer = (user) => {
 };
 
 const store = (state = [], action) => {
+  let users;
   switch (action.type) {
   case GET_USERS:
     return action.users;
   case UPDATE_USER:
-    return [ ...state, action.user ];
+    users = state.filter(user => user.id !== action.user.id)
+    return [ ...users, action.user ];
   default:
     return state;
   }
