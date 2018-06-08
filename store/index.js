@@ -7,9 +7,11 @@ import users, { updateUser } from './users';
 import organizationRequests, { updateOrganizationRequest } from './organizationRequests';
 import userOrganizations from './userOrganizations';
 import userRequests, { createUserRequest, updateUserRequest } from './userRequests';
+import forms from './forms';
+import descriptions from './descriptions';
 
 const middleware = applyMiddleware(thunk);
-const reducers = combineReducers({ organizations, user, users, organizationRequests, userOrganizations, userRequests });
+const reducers = combineReducers({ organizations, user, users, organizationRequests, userOrganizations, userRequests, forms, descriptions });
 
 const store = createStore(reducers, middleware);
 
@@ -37,3 +39,5 @@ export * from './organizationRequests';
 export * from './users';
 export * from './userOrganizations';
 export * from './userRequests';
+export * from './forms';
+export * from './descriptions';

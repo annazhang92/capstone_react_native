@@ -3,12 +3,13 @@ import { AsyncStorage, View } from 'react-native';
 import { connect } from 'react-redux';
 import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
 import { Asset, AppLoading } from 'expo';
-import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer } from '../store';
+import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer, getFormsFromServer, getDescriptionsFromServer } from '../store';
 
 import Home from './Home.js';
 import OrganizationInfo from './OrganizationInfo';
 import UserRequests from './UserRequests';
 import ModalStack from './modals/ModalStack';
+import UserDescriptions from './UserDescriptions';
 
 const TabNavigator = createMaterialTopTabNavigator({
   Organizations: {
@@ -35,6 +36,7 @@ const TabNavigator = createMaterialTopTabNavigator({
 const NavStack = createStackNavigator({
   Home: TabNavigator,
   Details: OrganizationInfo,
+  Descriptions: UserDescriptions
 }, {
   headerMode: 'screen',
   initialRouteName: 'Home'
@@ -59,7 +61,7 @@ class MainStack extends React.Component {
   }
 
   asyncLoad() {
-    const { getUser, getOrganizations, getUserOrganizations, getUsers, getUserRequests, getOrgRequests } = this.props;
+    const { getUser, getOrganizations, getUserOrganizations, getUsers, getUserRequests, getOrgRequests, getForms, getDescriptions } = this.props;
     return Promise.all([
       AsyncStorage.getItem('token')
         .then(token => {
@@ -72,6 +74,8 @@ class MainStack extends React.Component {
       getUserOrganizations(),
       getUserRequests(),
       getOrgRequests(),
+      getForms(),
+      getDescriptions(),
       Asset.fromModule(require('../assets/images/logo.png')).downloadAsync()
     ]);
   }
@@ -107,7 +111,9 @@ const mapDispatch = dispatch => ({
   getUserOrganizations: () => dispatch(getUserOrganizationsFromServer()),
   getUsers: () => dispatch(getUsersFromServer()),
   getUserRequests: () => dispatch(getUserRequestsFromServer()),
-  getOrgRequests: () => dispatch(getOrganizationRequestsFromServer())
+  getOrgRequests: () => dispatch(getOrganizationRequestsFromServer()),
+  getForms: () => dispatch(getFormsFromServer()),
+  getDescriptions: () => dispatch(getDescriptionsFromServer())
 });
 
 export default connect(mapState, mapDispatch)(MainStack);

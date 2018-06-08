@@ -40,10 +40,11 @@ class OrganizationInfo extends React.Component {
   }
 
   checkInUser(user, organization) {
-    const { updateUser } = this.props;
+    const { updateUser, descriptionConfirm } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
     // this.setState({ checkedIn: true })
+    if(!descriptionConfirm) return
     updateUser(updatedUser);
   }
 
@@ -56,7 +57,7 @@ class OrganizationInfo extends React.Component {
   }
 
   render() {
-    const { user, organization, ownRequest, createOrganizationRequest, organizationRequests } = this.props;
+    const { user, organization, ownRequest, createOrganizationRequest, organizationRequests, descriptionConfirm } = this.props;
     const { onRefresh, checkInUser, checkOutUser } = this;
     const { checkedIn } = this.state;
     // console.log(user)
@@ -135,15 +136,16 @@ class OrganizationInfo extends React.Component {
                 />
             )
           }
-          {
-            ownRequest && ownRequest.status === 'declined' && (
-              <View>
-                <Text style={{ fontSize: 20, marginTop: 20, textAlign: 'center' }}>
-                  We're sorry, but you have been declined. Please call the number above or visit the front desk.
-                </Text>
-              </View>
-            )
-          }
+          { !descriptionConfirm && <Text>Must fill in descriptions!</Text>}
+
+                <Button
+                  raised
+                  buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
+                  title='Edit Stats'
+                  // onPress={() => console.log('edit descriptions')}
+                  onPress={() => this.props.navigation.navigate('Descriptions')}
+                />
+
           { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
         </View>
       </ScrollView>
@@ -151,16 +153,20 @@ class OrganizationInfo extends React.Component {
   }
 }
 
-const mapState = ({ organizationRequests, user }, { navigation }) => {
+const mapState = ({ organizationRequests, user, forms, descriptions }, { navigation }) => {
   const organization = navigation.getParam('organization', 'no organization');
   const ownRequest = organizationRequests.find(request => {
     return request.userId === user.id && request.organizationId === organization.id
   })
+  const ownForms = forms.filter(form => form.organizationId === organization.id)
+  const ownDescriptions = descriptions.filter(description => description.userId === user.id && description.organizationId === organization.id)
+  const descriptionConfirm = ownForms.length === ownDescriptions.length;
   return {
     user,
     ownRequest,
     organization,
-    organizationRequests
+    organizationRequests,
+    descriptionConfirm
   }
 }
 
