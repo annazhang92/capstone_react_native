@@ -6,9 +6,13 @@ import user from './sessions';
 import users, { updateUser } from './users';
 import organizationRequests, { updateOrganizationRequest } from './organizationRequests';
 import userOrganizations from './userOrganizations';
+<<<<<<< HEAD
 import userRequests, { createUserRequest, updateUserRequest } from './userRequests';
 import forms from './forms';
 import descriptions from './descriptions';
+=======
+import userRequests, { createUserRequest, updateUserRequest, deleteUserRequest } from './userRequests';
+>>>>>>> a18c8c923885294fa89e29b23f250081fcb76bab
 
 const middleware = applyMiddleware(thunk);
 const reducers = combineReducers({ organizations, user, users, organizationRequests, userOrganizations, userRequests, forms, descriptions });
@@ -24,12 +28,15 @@ socket.on('newUserRequest', userRequest => {
 });
 
 socket.on('updatedUser', user => {
-  console.log('UPDATE USER SOCKET', user)
   store.dispatch(updateUser(user));
 });
 
 socket.on('updatedUserRequest', userRequest => {
   store.dispatch(updateUserRequest(userRequest));
+});
+
+socket.on('deletedUserRequest', id => {
+  store.dispatch(deleteUserRequest(id));
 });
 
 export default store;
