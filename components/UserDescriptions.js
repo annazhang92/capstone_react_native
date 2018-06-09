@@ -7,28 +7,34 @@ import SubmitDescription from './SubmitDescription';
 
 class UserDescriptions extends Component {
   render() {
-    const { orgForms, organization } = this.props;
+    const { orgForms, organization, descriptions, user } = this.props;
     return (
       <View>
         <Text h3>User Descriptions</Text>
         {
-          orgForms.map(form => (
-            <View key={form.id}>
-              <SubmitDescription form={form} organization={organization} />
-            </View>
-          ))
+          orgForms.map(form => {
+            const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
+            return (
+              <View key={form.id}>
+                <SubmitDescription form={form} organization={organization} description={description}/>
+              </View>
+            );
+          })
         }
       </View>
     );
   }
 }
 
-const mapState = ({ user, forms }, { navigation }) => {
+const mapState = ({ user, forms, descriptions }, { navigation }) => {
   const organization = navigation.getParam('organization', 'no organization');
-  const orgForms = forms.filter(form => form.organizationId === organization.id)
+  const orgForms = forms.filter(form => form.organizationId === organization.id);
+  // const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id)
   return {
     orgForms,
-    organization
+    organization,
+    descriptions,
+    user
   }
 }
 

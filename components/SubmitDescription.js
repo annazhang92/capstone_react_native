@@ -3,14 +3,15 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { connect } from 'react-redux'
 
-import { createDescriptionOnServer } from '../store';
+import { createDescriptionOnServer, updateDescriptionOnServer } from '../store';
 
 class SubmitDescription extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { description } = this.props;
     this.state = {
-      name: ''
+      name: description ? description.description : ''
     }
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -21,13 +22,28 @@ class SubmitDescription extends Component {
   }
 
   onSubmit(name, form, user, organization) {
-    const { createDescription } = this.props;
+    const { createDescription, updateDescription, description } = this.props;
+    if(description) {
+     updateDescription({
+        id: description.id,
+        userId: user.id,
+        description: name,
+        organizationId: organization.id,
+        formId: form.id
+      });
+    } else {
     createDescription({
       userId: user.id,
       description: name,
       organizationId: organization.id,
       formId: form.id
-    });
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { description } = nextProps;
+    this.setState({ name: description.description })
   }
 
   render() {
@@ -59,13 +75,14 @@ class SubmitDescription extends Component {
   }
 }
 
-const mapState = ({ user }, { form, organization }) => {
-  return { user, form, organization }
+const mapState = ({ user }, { form, organization, description }) => {
+  return { user, form, organization, description }
 }
 
 const mapDispatch = dispatch => {
   return {
-    createDescription: (description) => dispatch(createDescriptionOnServer(description))
+    createDescription: (description) => dispatch(createDescriptionOnServer(description)),
+    updateDescription: (description) => dispatch(updateDescriptionOnServer(description))
   }
 }
 
