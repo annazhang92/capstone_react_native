@@ -29,7 +29,6 @@ class UserDescriptions extends Component {
 const mapState = ({ user, forms, descriptions }, { navigation }) => {
   const organization = navigation.getParam('organization', 'no organization');
   const orgForms = forms.filter(form => form.organizationId === organization.id);
-  // const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id)
   return {
     orgForms,
     organization,

@@ -62,6 +62,7 @@ class SubmitDescription extends Component {
         <Text h4>{form.name}</Text>
         <TextInput
           style={styles.input}
+          value={ name }
           onChangeText={(name) => onChange(name)}
         />
         <Button
