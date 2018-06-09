@@ -57,9 +57,9 @@ class OrganizationInfo extends React.Component {
   }
 
   render() {
-    const { user, organization, ownRequest, createOrganizationRequest, organizationRequests, descriptionConfirm } = this.props;
+    const { user, organization, ownRequest, createOrganizationRequest, organizationRequests, descriptionConfirm, checkedIn } = this.props;
     const { onRefresh, checkInUser, checkOutUser } = this;
-    const { checkedIn } = this.state;
+    // const { checkedIn } = this.state;
     // console.log(user)
     // console.log('Error:', this.state.error)
     return (
@@ -136,15 +136,17 @@ class OrganizationInfo extends React.Component {
                 />
             )
           }
-          { !descriptionConfirm && <Text>Must fill in descriptions!</Text>}
-
-                <Button
-                  raised
-                  buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
-                  title='Edit Stats'
-                  onPress={() => this.props.navigation.navigate('Descriptions', { organization })}
-                />
-
+          { !descriptionConfirm && <Text>Must fill in descriptions!</Text> }
+          {
+            ownRequest && ownRequest.status === 'accepted' && (
+              <Button
+                raised
+                buttonStyle={{ backgroundColor: 'purple', borderRadius: 10, marginTop: 15 }}
+                title='Edit Stats'
+                onPress={() => this.props.navigation.navigate('Descriptions', { organization })}
+              />
+            )
+          }
           { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
         </View>
       </ScrollView>
@@ -160,12 +162,16 @@ const mapState = ({ organizationRequests, user, forms, descriptions }, { navigat
   const ownForms = forms.filter(form => form.organizationId === organization.id)
   const ownDescriptions = descriptions.filter(description => description.userId === user.id && description.organizationId === organization.id)
   const descriptionConfirm = ownForms.length === ownDescriptions.length;
+  const checkedIn = !!user.checkedInId
+  console.log(checkedIn)
+  console.log(user)
   return {
     user,
     ownRequest,
     organization,
     organizationRequests,
-    descriptionConfirm
+    descriptionConfirm,
+    checkedIn
   }
 }
 
