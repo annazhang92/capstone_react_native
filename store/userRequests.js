@@ -9,7 +9,7 @@ const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
 const getUserRequests = (userRequests) => ({ type: GET_USER_REQUESTS, userRequests });
 export const createUserRequest = (userRequest) => ({ type: CREATE_USER_REQUEST, userRequest });
 export const updateUserRequest = (userRequest) => ({ type: UPDATE_USER_REQUEST, userRequest });
-const deleteUserRequest = (id) => ({ type: DELETE_USER_REQUEST, id })
+export const deleteUserRequest = (id) => ({ type: DELETE_USER_REQUEST, id })
 
 export const getUserRequestsFromServer = () => {
   return dispatch => {
@@ -33,7 +33,7 @@ export const updateUserRequestOnServer = (userRequest) => {
     return axios.put(productionUrl + `/api/userRequests/${id}`, userRequest)
       .then(result => result.data)
       .then(userRequest => {
-        dispatch(updateUserRequest(userRequest))
+        dispatch(updateUserRequest(userRequest));
       });
   };
 };
