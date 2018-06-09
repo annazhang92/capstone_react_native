@@ -142,7 +142,6 @@ class OrganizationInfo extends React.Component {
                   raised
                   buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
                   title='Edit Stats'
-                  // onPress={() => console.log('edit descriptions')}
                   onPress={() => this.props.navigation.navigate('Descriptions', { organization })}
                 />
 
