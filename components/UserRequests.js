@@ -47,13 +47,14 @@ class UserRequests extends Component {
                   </View>
                 }
                 {
-                  status === 'accepted' &&
+                  status === 'accepted' && (
                     <Button
                       raised
-                      buttonStyle={{ backgroundColor: 'orange', borderRadius: 10, marginTop: 15 }}
+                      buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
                       title='Chat'
                       onPress={() => console.log('CHAT!')}
                     />
+                  )
                 }
 
               </View>

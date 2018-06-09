@@ -13,9 +13,8 @@ class UserList extends Component {
       <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Pair Up!</Text>
         {
           ownUsers.map(user => {
-            const requestSent = !!(userRequests.find(request => request.requesterId === loggedUser.id && request.responderId === user.id && request.organizationId === organization.id))
+            const requestSent = userRequests.find(request => request.requesterId === loggedUser.id && request.responderId === user.id && request.organizationId === organization.id)
             console.log(requestSent)
-            console.log(userRequests.length)
             return (
               <View
                 key={user.id}
@@ -28,17 +27,41 @@ class UserList extends Component {
                 }}>
                 <Text style={{ textAlign: 'center', fontSize: 18 }}>{user.fullName}</Text>
                 {
-                  <Button
-                    onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id, organizationId: organization.id })}
-                    title='Send Request'
-                    buttonStyle={{
-                      backgroundColor: 'blue',
-                      borderRadius: 10,
-                      marginTop: 15
-                    }}
-                    disabled={requestSent}
-                  />
-                }
+                  !requestSent ? (
+                    <Button
+                      onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id, organizationId: organization.id })}
+                      title='Send Request'
+                      buttonStyle={{
+                        backgroundColor: 'blue',
+                        borderRadius: 10,
+                        marginTop: 15
+                      }}
+                    />
+                    ) :
+                    requestSent && requestSent.status === 'pending' ? (
+                     <Button
+                      onPress={() => console.log("Stop pressing this button! It doesn't work!")}
+                      title='Request Sent'
+                      buttonStyle={{
+                        backgroundColor: 'blue',
+                        borderRadius: 10,
+                        marginTop: 15
+                      }}
+                      disabled={ true }
+                    />
+                    )
+                      : (
+                      <Button
+                        onPress={() => console.log('CHAT!')}
+                        title='Chat'
+                        buttonStyle={{
+                          backgroundColor: 'green',
+                          borderRadius: 10,
+                          marginTop: 15
+                        }}
+                      />
+                    )
+                  }
               </View>
             )
           })
