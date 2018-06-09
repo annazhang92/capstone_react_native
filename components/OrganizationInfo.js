@@ -136,7 +136,7 @@ class OrganizationInfo extends React.Component {
                 />
             )
           }
-          { !descriptionConfirm && <Text>Must fill in descriptions!</Text> }
+          { !descriptionConfirm && ownRequest && ownRequest.status === 'accepted' && <Text>Must fill in descriptions!</Text> }
           {
             ownRequest && ownRequest.status === 'accepted' && (
               <Button
