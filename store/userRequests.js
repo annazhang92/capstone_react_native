@@ -34,9 +34,9 @@ export const updateUserRequestOnServer = (userRequest) => {
       .then(result => result.data)
       .then(userRequest => {
         dispatch(updateUserRequest(userRequest))
-      })
-  }
-}
+      });
+  };
+};
 
 export const deleteUserRequestFromServer = (id) => {
   return dispatch => {
