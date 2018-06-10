@@ -147,7 +147,7 @@ class OrganizationInfo extends React.Component {
               />
             )
           }
-          { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
+          { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} navigation={ this.props.navigation } /> }
         </View>
       </ScrollView>
     );

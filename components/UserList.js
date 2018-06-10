@@ -7,14 +7,13 @@ import { createUserRequestOnServer } from '../store';
 class UserList extends Component {
 
   render() {
-    const { loggedUser, ownUsers, createRequest, userRequests, organization } = this.props;
+    const { loggedUser, ownUsers, createRequest, userRequests, organization, navigation } = this.props;
     return (
       <View>
       <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Pair Up!</Text>
         {
           ownUsers.map(user => {
             const requestSent = userRequests.find(request => request.requesterId === loggedUser.id && request.responderId === user.id && request.organizationId === organization.id)
-            console.log(requestSent)
             return (
               <View
                 key={user.id}
@@ -52,7 +51,7 @@ class UserList extends Component {
                     )
                       : (
                       <Button
-                        onPress={() => console.log('CHAT!')}
+                        onPress={() => navigation.navigate('Chat', { receivingUser: user })}
                         title='Chat'
                         buttonStyle={{
                           backgroundColor: 'green',
@@ -71,14 +70,15 @@ class UserList extends Component {
   }
 }
 
-const mapState = ({ user, users, userRequests }, { organization }) => {
+const mapState = ({ user, users, userRequests }, { organization, navigation }) => {
   const ownUsers = users.filter(ownUser => ownUser.checkedInId === organization.id && ownUser.id !== user.id);
   const loggedUser = user;
   return {
     ownUsers,
     loggedUser,
     userRequests,
-    organization
+    organization,
+    navigation
   }
 }
 
