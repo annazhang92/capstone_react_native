@@ -26,7 +26,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { organizations, user } = this.props;
+    const { myOrgs } = this.props;
     const { navigate } = this.props.navigation;
     return (
       <ScrollView
@@ -39,7 +39,7 @@ class Home extends React.Component {
       >
         <List>
           {
-            organizations.map((organization, index) => (
+            myOrgs.map((organization, index) => (
               <ListItem
                 roundAvatar
                 avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
@@ -56,8 +56,15 @@ class Home extends React.Component {
   }
 }
 
-const mapState = ({ organizations, user }) => ({
-  organizations, user
+const mapState = ({ userOrganizations, organizations, user }) => ({
+  myOrgs: userOrganizations.reduce((array, userOrg) => {
+    const organization = organizations.find(org => userOrg.userId === user.id && userOrg.organizationId === org.id);
+    if(organization) {
+      array.push(organization);
+    }
+    return array;
+  }, []),
+  user
 });
 
 const mapDispatch = dispatch => ({

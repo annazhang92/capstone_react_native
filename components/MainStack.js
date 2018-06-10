@@ -20,7 +20,7 @@ const TabNavigator = createMaterialTopTabNavigator({
   Requests: {
     screen: UserRequests,
   },
-  Map: {
+  Find: {
     screen: SearchMap,
   }
 }, {
