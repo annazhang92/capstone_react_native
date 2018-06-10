@@ -13,13 +13,13 @@ import UserDescriptions from './UserDescriptions';
 import SearchMap from './SearchMap'
 
 const TabNavigator = createMaterialTopTabNavigator({
-  Organizations: {
+  'My Orgs': {
     screen: Home,
   },
   Requests: {
     screen: UserRequests,
   },
-  Search: {
+  Map: {
     screen: SearchMap,
   }
 }, {

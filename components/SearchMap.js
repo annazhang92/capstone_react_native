@@ -15,7 +15,6 @@ class SearchMap extends React.Component {
   render() {
     const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
-    // console.log(user);
     return (
       <View style={styles.container}>
         <MapView
@@ -26,18 +25,6 @@ class SearchMap extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-          {/* <MapView.Marker
-            coordinate={{
-              latitude: 40.705076,
-              longitude: -74.009160,
-            }}
-          >
-            <View style={styles.radius}>
-              <View style={styles.marker} />
-            </View>
-
-          </MapView.Marker> */}
-
           {organizations.map((organization) => {
             const latitude = Number(organization.latitude)
             const longitude = Number(organization.longitude)
@@ -50,33 +37,14 @@ class SearchMap extends React.Component {
                   longitude: longitude
                 }}
               >
-                <Callout
-                  // style={mapCalloutStyles.calloutContainer}
-                  //tooltip
-                >
-                  {/* <MapCallout
-                    title={organization.name}
-                  /> */}
-                  <Text>{organization.name}</Text>
-                  <Button title='Detail'
-                    onPress={() => navigate('Details', { organization })}
-                  ></Button>
+                <Callout onPress={() => navigate('Details', { organization })} style={ styles.callout }>
+                  <Text style={ styles.calloutText }>{organization.name}</Text>
                 </Callout>
 
               </Marker>
             )
           }
           )}
-
-          }
-
-          {/* <MapView.Marker
-            coordinate={{
-              latitude: 40.705076,
-              longitude: -74.009160,
-            }}
-           >
-          </MapView.Marker> */}
 
         </MapView>
       </View>
@@ -117,16 +85,25 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     position: 'absolute'
+  },
+  callout: {
+    height: 50,
+    width: 100,
+    backgroundColor: '#02A4FF',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  calloutText: {
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: 'bold'
   }
-
 })
 
 const mapState = ({ organizations, user }) => ({
   organizations, user
 });
 
-const mapDispatch = dispatch => ({
-
-});
+const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(SearchMap);
