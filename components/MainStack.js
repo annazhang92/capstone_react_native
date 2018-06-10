@@ -10,6 +10,7 @@ import OrganizationInfo from './OrganizationInfo';
 import UserRequests from './UserRequests';
 import ModalStack from './modals/ModalStack';
 import UserDescriptions from './UserDescriptions';
+import SearchMap from './SearchMap'
 
 const TabNavigator = createMaterialTopTabNavigator({
   Organizations: {
@@ -17,6 +18,9 @@ const TabNavigator = createMaterialTopTabNavigator({
   },
   Requests: {
     screen: UserRequests,
+  },
+  Search: {
+    screen: SearchMap,
   }
 }, {
     headerMode: 'none',
