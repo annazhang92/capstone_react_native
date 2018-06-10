@@ -17,8 +17,6 @@ class OrganizationInfo extends React.Component {
     super();
     this.state = {
       refreshing: false,
-      // checkedIn: false,
-      // error: ''
     }
     this.onRefresh = this.onRefresh.bind(this);
     this.checkInUser = this.checkInUser.bind(this);
@@ -32,10 +30,8 @@ class OrganizationInfo extends React.Component {
   onRefresh() {
     const { loadOrganizationsRequests, loadUsers, loadOrganizations } = this.props;
     this.setState({ refreshing: true })
-    // loadUsers()
     loadOrganizationsRequests()
       .then(() => loadUsers())
-      // .then(() => loadOrganizations())
       .then(() => this.setState({ refreshing: false }))
   }
 
@@ -43,7 +39,6 @@ class OrganizationInfo extends React.Component {
     const { updateUser, descriptionConfirm } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
-    // this.setState({ checkedIn: true })
     if(!descriptionConfirm) return
     updateUser(updatedUser);
   }
@@ -52,16 +47,12 @@ class OrganizationInfo extends React.Component {
     const { updateUser } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: null }
-    // this.setState({ checkedIn: false })
     updateUser(updatedUser);
   }
 
   render() {
     const { user, organization, ownRequest, createOrganizationRequest, organizationRequests, descriptionConfirm, checkedIn } = this.props;
     const { onRefresh, checkInUser, checkOutUser } = this;
-    // const { checkedIn } = this.state;
-    // console.log(user)
-    // console.log('Error:', this.state.error)
     return (
       <ScrollView
         refreshControl={
@@ -147,7 +138,7 @@ class OrganizationInfo extends React.Component {
               />
             )
           }
-          { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} /> }
+          { user.checkedInId && user.checkedInId === organization.id && <UserList organization={organization} navigation={ this.props.navigation } /> }
         </View>
       </ScrollView>
     );
@@ -163,8 +154,6 @@ const mapState = ({ organizationRequests, user, forms, descriptions }, { navigat
   const ownDescriptions = descriptions.filter(description => description.userId === user.id && description.organizationId === organization.id)
   const descriptionConfirm = ownForms.length === ownDescriptions.length;
   const checkedIn = !!user.checkedInId
-  console.log(checkedIn)
-  console.log(user)
   return {
     user,
     ownRequest,

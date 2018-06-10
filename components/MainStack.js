@@ -10,7 +10,8 @@ import OrganizationInfo from './OrganizationInfo';
 import UserRequests from './UserRequests';
 import ModalStack from './modals/ModalStack';
 import UserDescriptions from './UserDescriptions';
-import SearchMap from './SearchMap'
+import Chat from './Chat';
+import SearchMap from './SearchMap';
 
 const TabNavigator = createMaterialTopTabNavigator({
   'My Orgs': {
@@ -25,7 +26,6 @@ const TabNavigator = createMaterialTopTabNavigator({
 }, {
     headerMode: 'none',
     tabBarOptions: {
-      // scrollEnabled: true,
       activeTintColor: '#02A4FF',
       inactiveTintColor: 'grey',
       labelStyle: {
@@ -40,7 +40,8 @@ const TabNavigator = createMaterialTopTabNavigator({
 const NavStack = createStackNavigator({
   Home: TabNavigator,
   Details: OrganizationInfo,
-  Descriptions: UserDescriptions
+  Descriptions: UserDescriptions,
+  Chat: Chat,
 }, {
   headerMode: 'screen',
   initialRouteName: 'Home'

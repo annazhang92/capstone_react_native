@@ -5,9 +5,6 @@ import { Text, Button } from 'react-native-elements'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   title: `REQUESTS ()`
-  // }
   render() {
     const { user, users, receivedRequests, updateUserRequest, deleteUserRequest } = this.props;
     return (
@@ -52,7 +49,7 @@ class UserRequests extends Component {
                       raised
                       buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
                       title='Chat'
-                      onPress={() => console.log('CHAT!')}
+                      onPress={() => this.props.navigation.navigate('Chat', { receivingUser: requester })}
                     />
                   )
                 }

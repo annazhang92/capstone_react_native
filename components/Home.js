@@ -5,11 +5,6 @@ import { connect } from 'react-redux';
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
-  // static navigationOptions = {
-    // title: 'Choose an Organization!',
-    // headerMode: 'float'
-  // }
-
   constructor() {
     super();
     this.state = { refreshing: false }
@@ -33,7 +28,6 @@ class Home extends React.Component {
   render() {
     const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
-    // console.log(user);
     return (
       <ScrollView
         refreshControl={
