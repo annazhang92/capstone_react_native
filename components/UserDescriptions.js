@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Alert } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-
 import { createDescriptionOnServer, updateDescriptionOnServer } from '../store';
-
 import SubmitDescription from './SubmitDescription';
 
 class UserDescriptions extends Component {
@@ -81,7 +79,6 @@ class UserDescriptions extends Component {
                   value={ownState[form.id]}
                   onChangeText={(ownState) => onChange(form.id, ownState)}
                 />
-                { description && <Text>{description.description}</Text>}
               </View>
             );
           })
