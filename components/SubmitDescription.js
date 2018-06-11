@@ -1,4 +1,38 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { Text } from 'react-native-elements';
+import { connect } from 'react-redux'
+
+// import { createDescriptionOnServer, updateDescriptionOnServer } from '../store';
+
+class SubmitDescription extends Component {
+  render() {
+    const { form, user, organization, onChange, ownState } = this.props;
+    return (
+
+    );
+  }
+}
+
+const mapState = ({ user }, { form, organization, description, onChange }) => {
+  return { user, form, organization, description, onChange }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    // createDescription: (description) => dispatch(createDescriptionOnServer(description)),
+    // updateDescription: (description) => dispatch(updateDescriptionOnServer(description))
+  }
+}
+
+export default connect(mapState, mapDispatch)(SubmitDescription);
+
+
+*/
+
+
+
+/*import React, { Component } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { connect } from 'react-redux'
@@ -99,3 +133,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   }
 });
+*/

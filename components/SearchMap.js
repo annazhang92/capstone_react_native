@@ -1,17 +1,19 @@
-import React from 'react';
-import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl, StyleSheet } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
+import React, { Component } from 'react';
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
-class SearchMap extends React.Component {
+/*
+const SearchMap = () => {
+  return (
+    <View>
+      <Text>MAP</Text>
+    </View>
+  );
+}
+*/
 
-  constructor() {
-    super();
-    this.state = { refreshing: false }
-  }
-
-
+class SearchMap extends Component {
   render() {
     const { organizations, user } = this.props;
     const { navigate } = this.props.navigation;
@@ -24,33 +26,43 @@ class SearchMap extends React.Component {
             longitude: -74.009160,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-          }}>
-          {organizations.map((organization) => {
-            const latitude = Number(organization.latitude)
-            const longitude = Number(organization.longitude)
-            const id = organization.id
-            return (
-              <Marker
-                key={id}
-                coordinate={{
-                  latitude: latitude,
-                  longitude: longitude
-                }}
-              >
-                <Callout onPress={() => navigate('Details', { organization })} style={ styles.callout }>
-                  <Text style={ styles.calloutText }>{organization.name}</Text>
-                </Callout>
-
-              </Marker>
-            )
+          }}
+        >
+          {
+            organizations.map((organization) => {
+              const latitude = Number(organization.latitude);
+              const longitude = Number(organization.longitude);
+              const id = organization.id;
+              return (
+                <Marker
+                  key={id}
+                  coordinate={{
+                    latitude: latitude,
+                    longitude: longitude
+                  }}
+                >
+                  <Callout onPress={() => navigate('Details', { organization })} style={ styles.callout }>
+                    <Text style={ styles.calloutText }>{organization.name}</Text>
+                  </Callout>
+                </Marker>
+              );
+            })
           }
-          )}
-
         </MapView>
       </View>
     );
   }
 }
+
+
+
+const mapState = ({ organizations, user }) => ({
+  organizations, user
+});
+
+const mapDispatch = null;
+
+export default connect(mapState, mapDispatch)(SearchMap);
 
 const styles = StyleSheet.create({
   radius: {
@@ -99,11 +111,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 })
-
-const mapState = ({ organizations, user }) => ({
-  organizations, user
-});
-
-const mapDispatch = null;
-
-export default connect(mapState, mapDispatch)(SearchMap);
