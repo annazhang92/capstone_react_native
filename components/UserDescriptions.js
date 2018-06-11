@@ -8,12 +8,19 @@ import { createDescriptionOnServer, updateDescriptionOnServer } from '../store';
 import SubmitDescription from './SubmitDescription';
 
 class UserDescriptions extends Component {
-  constructor() {
-    super();
-    this.state = {}
+  constructor(props) {
+    super(props);
+    const { orgForms, organization, user, descriptions } = props;
+    const reducedForms = orgForms.reduce((memo, form) => {
+      const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
+      if(description) {
+        memo[form.id] = description.description;
+      }
+      return memo;
+    }, {})
+    this.state = reducedForms;
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    // this.descriptionExists = this.descriptionExists.bind(this);
   }
 
   componenentWillReceiveProps(nextProps) {
@@ -33,7 +40,6 @@ class UserDescriptions extends Component {
     }
     ownState.forEach(stateItem => {
       const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === stateItem)
-      // const description = this.descriptionExists(form);
       if(description) {
         updateDescription({
           id: description.id,
@@ -53,13 +59,8 @@ class UserDescriptions extends Component {
     })
   }
 
-  // descriptionExists(form) {
-  //   const { user, descriptions, organization } = this.props;
-  //   return descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
-  // }
-
   render() {
-    const { orgForms } = this.props;
+    const { orgForms, descriptions, organization, user } = this.props;
     const { onChange, onSubmit, descriptionExists } = this;
     const ownState = this.state;
     console.log(this.state);
@@ -68,7 +69,7 @@ class UserDescriptions extends Component {
         <Text h3>User Descriptions</Text>
         {
           orgForms.map(form => {
-            // descriptionExists(form)
+            const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
             return (
               <View
                 key={form.id}
@@ -77,9 +78,10 @@ class UserDescriptions extends Component {
                 <Text h4>{form.name}</Text>
                 <TextInput
                   style={styles.input}
-                  value={ownState[form.name]}
+                  value={ownState[form.id]}
                   onChangeText={(ownState) => onChange(form.id, ownState)}
                 />
+                { description && <Text>{description.description}</Text>}
               </View>
             );
           })
