@@ -55,6 +55,7 @@ class OrganizationInfo extends React.Component {
     const { onRefresh, checkInUser, checkOutUser } = this;
     return (
       <ScrollView
+        style={{ backgroundColor: organization.backgroundColor }}
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -63,25 +64,29 @@ class OrganizationInfo extends React.Component {
         }
       >
         <View style={styles.image}>
-          { organization.image && <Image
-            style={{ width: 400, height: 275 }}
-            source={{ uri: organization.image }}
-          />}
+          {
+            organization.image && (
+              <Image
+                style={{ width: 400, height: 275 }}
+                source={{ uri: organization.image }}
+              />
+            )
+          }
         </View>
         <View style={styles.container}>
-          <Text h3 style={styles.text}>
+          <Text h3 style={[ styles.text, { color: organization.textColor } ]}>
             {organization.name}
           </Text>
-          <Text style={[ styles.text, { marginBottom: 20 } ]}>
+          <Text style={[ styles.text, { marginBottom: 20, color: organization.textColor } ]}>
             ({organization.organization_type})
           </Text>
-          <Text style={[ styles.text, { fontSize: 20 } ]}>
+          <Text style={[ styles.text, { fontSize: 20, color: organization.textColor} ]}>
             {organization.contact_phone}
           </Text>
-          <Text style={styles.text}>
+          <Text style={[ styles.text, { color: organization.textColor } ]}>
             {organization.address}
           </Text>
-          <Text style={styles.text}>
+          <Text style={[ styles.text, { color: organization.textColor } ]}>
             {organization.city}, {organization.state} {organization.zip}
           </Text>
           {
