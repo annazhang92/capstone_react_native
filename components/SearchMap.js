@@ -18,7 +18,6 @@ class SearchMap extends React.Component {
       }
     };
     this.handleChange = this.handleChange.bind(this);
-    this.search = this.search.bind(this);
     this.zoomToMarker = this.zoomToMarker.bind(this);
   }
 
