@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TextInput, FlatList } from 'react-native';
+import { Text, View, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
@@ -19,6 +19,7 @@ class SearchMap extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.search = this.search.bind(this);
+    this.zoomToMarker = this.zoomToMarker.bind(this);
   }
 
   handleChange(value) {
@@ -37,7 +38,16 @@ class SearchMap extends React.Component {
   }
 
   zoomToMarker(longitude, latitude) {
-
+    this.setState({
+      coordinates: {
+        latitude: Number(latitude),
+        longitude: Number(longitude),
+        latitudeDelta: 0.002,
+        longitudeDelta: 0.002
+      },
+      search: '',
+      searchList: []
+    });
   }
 
   render() {
@@ -81,8 +91,9 @@ class SearchMap extends React.Component {
           <View style={ styles.listContainer }>
             <FlatList
               data={ searchList }
-              renderItem={ ({ item }) => ListItem(item) }
+              renderItem={ ({ item }) => ListItem(item, this.zoomToMarker) }
               keyExtractor={ (item) => item.id }
+              o
             />
           </View>
         </View>
@@ -91,15 +102,20 @@ class SearchMap extends React.Component {
   }
 }
 
-const ListItem = item => {
+const ListItem = (item, zoom) => {
   return (
-    <View style={ styles.itemContainer }>
-      <Text style={ styles.itemText }>
-        { item.name }&nbsp;
-      </Text>
-      <Text style={ styles.itemSubtitle }>
-        ({ item.organization_type })
-      </Text>
+    <View>
+      <TouchableOpacity
+        onPress={ () => zoom(item.longitude, item.latitude) }
+        style={ styles.itemContainer}
+      >
+        <Text style={ styles.itemText }>
+          { item.name }&nbsp;
+        </Text>
+        <Text style={ styles.itemSubtitle }>
+          ({ item.organization_type })
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
