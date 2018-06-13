@@ -54,19 +54,16 @@ class UserProfile extends React.Component {
         if (Object.keys(errors).length) {
             return;
         }
+        const { firstName, lastName, email, password } = this.state;
         updateUser({
             id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password
         });
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { user } = nextProps;
-        this.setState({ id: user.id, firstName: user.firstName, lastName: user.lastName, email:user.email, password: user.password })
-    }
 
 
     render() {
@@ -75,7 +72,7 @@ class UserProfile extends React.Component {
         const { firstName, lastName, email, password, errors } = this.state;
         return (
             <View>
-                <Text h3>My Profile</Text>
+                <Text style={styles.header} h3>My Profile</Text>
                 <Text style={styles.error}>{errors.firstName}</Text>
                 <FormLabel>First Name</FormLabel>
                 <FormInput
@@ -109,7 +106,7 @@ class UserProfile extends React.Component {
                 />
                 <TouchableOpacity
                     style={styles.buttonContainer}
-                    onPress={this.handleSubmit}
+                    onPress={() => onSubmit(user)}
                 >
                     <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
@@ -131,11 +128,10 @@ const mapDispatch = (dispatch) => {
 export default connect(mapState, mapDispatch)(UserProfile)
 
 const styles = StyleSheet.create({
-    container: {
+    header: {
         justifyContent: 'center',
-        marginTop: 50,
-        padding: 20,
-        backgroundColor: '#fff',
+        marginTop: 10,
+        padding: 5,
     },
     input: {
         height: 40,
