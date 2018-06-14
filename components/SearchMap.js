@@ -2,8 +2,13 @@ import React from 'react';
 import { Text, View, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 class SearchMap extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: 'Search',
+    tabBarIcon: () => <Icon size={20} name='search' color="#02a4ff" />
+  }
 
   constructor() {
     super();

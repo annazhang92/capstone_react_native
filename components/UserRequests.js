@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Text, Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
+  static navigationOptions = {
+    tabBarLabel: 'Requests',
+    tabBarIcon: () => <Icon size={20} name='users' color="#02a4ff" />
+  }
+
   render() {
     const { user, users, receivedRequests, updateUserRequest, deleteUserRequest } = this.props;
     return (

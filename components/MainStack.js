@@ -1,7 +1,8 @@
 import React from 'react';
 import { AsyncStorage, View } from 'react-native';
 import { connect } from 'react-redux';
-import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Asset, AppLoading } from 'expo';
 import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer, getFormsFromServer, getDescriptionsFromServer } from '../store';
 
@@ -13,7 +14,7 @@ import UserDescriptions from './UserDescriptions';
 import Chat from './Chat';
 import SearchMap from './SearchMap';
 
-const TabNavigator = createMaterialTopTabNavigator({
+const TabNavigator = createMaterialBottomTabNavigator({
   'My Orgs': {
     screen: Home,
   },
@@ -24,17 +25,13 @@ const TabNavigator = createMaterialTopTabNavigator({
     screen: SearchMap,
   }
 }, {
-    headerMode: 'none',
-    tabBarOptions: {
-      activeTintColor: '#02A4FF',
-      inactiveTintColor: 'grey',
-      labelStyle: {
-        fontSize: 16,
-      },
-      style: {
-        backgroundColor: '#fff',
-      }
-    },
+  initialRouteName: 'My Orgs',
+  activeTintColor: '#02a4ff',
+  inactiveTintColor: '#005d91',
+  barStyle: {
+    backgroundColor: '#fff',
+    paddingBottom: 20,
+  }
 });
 
 const NavStack = createStackNavigator({
@@ -44,7 +41,12 @@ const NavStack = createStackNavigator({
   Chat: Chat,
 }, {
   headerMode: 'screen',
-  initialRouteName: 'Home'
+  initialRouteName: 'Home',
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#fff',
+    }
+  }
 });
 
 const RootStack = createStackNavigator({
