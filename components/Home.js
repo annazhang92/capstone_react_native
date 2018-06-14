@@ -7,8 +7,6 @@ import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
   static navigationOptions = {
-    headerTitleStyle: { color: 'black' },
-    title: 'My Places',
     tabBarIcon: () => <Icon size={20} name='map-pin' color="#02a4ff" />
   }
 

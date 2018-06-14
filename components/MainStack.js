@@ -16,7 +16,7 @@ import SearchMap from './SearchMap';
 
 const TabNavigator = createMaterialBottomTabNavigator({
   'My Orgs': {
-    screen: Home,
+    screen: Home
   },
   Requests: {
     screen: UserRequests,
@@ -35,7 +35,12 @@ const TabNavigator = createMaterialBottomTabNavigator({
 });
 
 const NavStack = createStackNavigator({
-  Home: TabNavigator,
+  Home: {
+    screen: TabNavigator,
+    navigationOptions: {
+      title: 'Pair Up!'
+    }
+  },
   Details: OrganizationInfo,
   Descriptions: UserDescriptions,
   Chat: Chat,

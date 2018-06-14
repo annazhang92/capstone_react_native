@@ -7,7 +7,6 @@ import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store
 
 class UserRequests extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Requests',
     tabBarIcon: () => <Icon size={20} name='users' color="#02a4ff" />
   }
 
