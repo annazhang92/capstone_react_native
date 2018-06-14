@@ -7,7 +7,7 @@ import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
   static navigationOptions = {
-    tabBarIcon: () => <Icon size={20} name='map-pin' color="#02a4ff" />
+    tabBarIcon: () => <Icon size={22} name='map-pin' color="#02a4ff" />
   }
 
   constructor() {

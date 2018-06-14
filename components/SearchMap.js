@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 class SearchMap extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Search',
-    tabBarIcon: () => <Icon size={20} name='search' color="#02a4ff" />
+    tabBarIcon: () => <Icon size={22} name='search' color="#02a4ff" />
   }
 
   constructor() {

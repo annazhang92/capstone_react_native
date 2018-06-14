@@ -5,12 +5,13 @@ import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Asset, AppLoading } from 'expo';
 import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer, getFormsFromServer, getDescriptionsFromServer } from '../store';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Home from './Home.js';
 import OrganizationInfo from './OrganizationInfo';
 import UserRequests from './UserRequests';
 import ModalStack from './modals/ModalStack';
 import UserDescriptions from './UserDescriptions';
+import UserProfile from './UserProfile';
 import Chat from './Chat';
 import SearchMap from './SearchMap';
 
@@ -18,7 +19,7 @@ const TabNavigator = createMaterialBottomTabNavigator({
   'My Orgs': {
     screen: Home
   },
-  Requests: {
+  "Req's": {
     screen: UserRequests,
   },
   Find: {
@@ -38,12 +39,21 @@ const NavStack = createStackNavigator({
   Home: {
     screen: TabNavigator,
     navigationOptions: {
-      title: 'Pair Up!'
+      title: 'Pair Up!',
+      headerRight: (
+        <Icon
+          size={22}
+          name='map-pin'
+          color="#02a4ff"
+          style={{ marginRight: 20 }}
+        />
+      )
     }
   },
   Details: OrganizationInfo,
   Descriptions: UserDescriptions,
   Chat: Chat,
+  UserProfile: UserProfile
 }, {
   headerMode: 'screen',
   initialRouteName: 'Home',
