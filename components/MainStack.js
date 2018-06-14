@@ -54,7 +54,7 @@ const RootStack = createStackNavigator({
   Nav: NavStack
 }, {
   initialRouteName: 'Nav',
-  headerMode: 'none'
+  headerMode: 'none',
 });
 
 class MainStack extends React.Component {
