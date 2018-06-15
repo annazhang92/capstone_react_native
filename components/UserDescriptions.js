@@ -30,10 +30,11 @@ class UserDescriptions extends Component {
 
   onSubmit() {
     const dynamicState = this.state;
-    const { organization, user, descriptions, updateDescription, createDescription, orgForms } = this.props;
+    const { organization, user, descriptions, updateDescription, createDescription, orgForms, navigation } = this.props;
     const ownState = Object.keys(dynamicState);
     if(ownState.length !== orgForms.length) {
       Alert.alert('You must fill out all forms!');
+      return;
     }
     ownState.forEach(stateItem => {
       const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === stateItem)
@@ -54,6 +55,16 @@ class UserDescriptions extends Component {
         });
       }
     })
+    if(ownState.length === orgForms.length) {
+      const bool = ownState.map(item => {
+        return !!dynamicState[item]
+      })
+      if(bool.includes(false)) {
+        Alert.alert('You must fill out all forms!')
+      } else {
+        navigation.goBack();
+      }
+    }
   }
 
   render() {
@@ -99,7 +110,8 @@ const mapState = ({ user, forms, descriptions }, { navigation }) => {
     orgForms,
     organization,
     descriptions,
-    user
+    user,
+    navigation
   }
 }
 

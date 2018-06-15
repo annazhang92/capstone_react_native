@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, ScrollView, Image, RefreshControl } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, RefreshControl, Alert } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser, getUsersFromServer, getOrganizationsFromServer } from '../store';
 
@@ -36,8 +36,11 @@ class OrganizationInfo extends React.Component {
   }
 
   checkInUser(user, organization) {
-    const { updateUser, descriptionConfirm } = this.props;
+    const { updateUser, descriptionConfirm, ownRequest } = this.props;
     const { id, firstName, lastName, email, password, userStatus } = user;
+    if (!descriptionConfirm && ownRequest && ownRequest.status === 'accepted') {
+      return Alert.alert('Please fill out your stats before checking in!');
+    }
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
     if(!descriptionConfirm) return
     updateUser(updatedUser);
@@ -132,13 +135,12 @@ class OrganizationInfo extends React.Component {
                 />
             )
           }
-          { !descriptionConfirm && ownRequest && ownRequest.status === 'accepted' && <Text>Must fill in descriptions!</Text> }
           {
             ownRequest && ownRequest.status === 'accepted' && (
               <Button
                 raised
                 buttonStyle={{ backgroundColor: 'purple', borderRadius: 10, marginTop: 15 }}
-                title='Edit Stats'
+                title={!descriptionConfirm ? 'Add Stats' : 'Edit Stats'}
                 onPress={() => this.props.navigation.navigate('Descriptions', { organization })}
               />
             )

@@ -19,7 +19,7 @@ const TabNavigator = createMaterialBottomTabNavigator({
   'My Orgs': {
     screen: Home
   },
-  "Req's": {
+  "Pair Requests": {
     screen: UserRequests,
   },
   Find: {

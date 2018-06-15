@@ -50,7 +50,7 @@ class Home extends React.Component {
             myOrgs.map((organization) => (
               <ListItem
                 roundAvatar
-                avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
+                avatar={{uri: organization.avatar || 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
                 containerStyle={ styles.listItem }
                 title={organization.name}
                 subtitle={organization.organization_type}
