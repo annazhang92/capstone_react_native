@@ -5,7 +5,7 @@ import organizations from './organizations';
 import user from './sessions';
 import users, { updateUser } from './users';
 import organizationRequests, { updateOrganizationRequest } from './organizationRequests';
-import userOrganizations from './userOrganizations';
+import userOrganizations, { createUserOrganization } from './userOrganizations';
 import userRequests, { createUserRequest, updateUserRequest, deleteUserRequest } from './userRequests';
 import forms from './forms';
 import descriptions from './descriptions';
@@ -39,6 +39,11 @@ socket.on('deletedUserRequest', id => {
 socket.on('newMessage', messages => {
   store.dispatch(gotMessages(messages));
 });
+
+socket.on('addUserOrganization', userOrganization => {
+  store.dispatch(createUserOrganization(userOrganization));
+});
+
 
 export default store;
 export * from './organizations';

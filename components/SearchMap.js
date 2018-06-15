@@ -1,68 +1,128 @@
-import React, { Component } from 'react';
-import { Text, View, Button, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-/*
-const SearchMap = () => {
-  return (
-    <View>
-      <Text>MAP</Text>
-    </View>
-  );
-}
-*/
+class SearchMap extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: 'Search',
+    tabBarIcon: () => <Icon size={22} name='search' color="#02a4ff" />
+  }
 
-class SearchMap extends Component {
+  constructor() {
+    super();
+    this.state = {
+      search: '',
+      searchList: [],
+      coordinates: {
+        latitude: 40.705076,
+        longitude: -74.009160,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.zoomToMarker = this.zoomToMarker.bind(this);
+  }
+
+  handleChange(value) {
+    this.setState({ search: value });
+    this.search(value);
+  }
+
+  search(value) {
+    const { organizations } = this.props;
+    const searchList = organizations.filter(org => org.name.toLowerCase().startsWith(value.toLowerCase()));
+    if(value) {
+      this.setState({ searchList });
+    } else {
+      this.setState({ searchList: [] });
+    }
+  }
+
+  zoomToMarker(longitude, latitude) {
+    this.setState({
+      coordinates: {
+        latitude: Number(latitude),
+        longitude: Number(longitude),
+        latitudeDelta: 0.002,
+        longitudeDelta: 0.002
+      },
+      search: '',
+      searchList: []
+    });
+  }
+
   render() {
-    const { organizations, user } = this.props;
+    const { organizations } = this.props;
     const { navigate } = this.props.navigation;
+    const { search, searchList, coordinates } = this.state;
+
     return (
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          initialRegion={{
-            latitude: 40.705076,
-            longitude: -74.009160,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {
-            organizations.map((organization) => {
-              const latitude = Number(organization.latitude);
-              const longitude = Number(organization.longitude);
-              const id = organization.id;
-              return (
-                <Marker
-                  key={id}
-                  coordinate={{
-                    latitude: latitude,
-                    longitude: longitude
-                  }}
-                >
-                  <Callout onPress={() => navigate('Details', { organization })} style={ styles.callout }>
-                    <Text style={ styles.calloutText }>{organization.name}</Text>
-                  </Callout>
-                </Marker>
-              );
-            })
+          region={ coordinates }>
+          {organizations.map((organization) => {
+            const latitude = Number(organization.latitude);
+            const longitude = Number(organization.longitude);
+            const id = organization.id;
+            return (
+              <Marker
+                key={id}
+                coordinate={{
+                  latitude: latitude,
+                  longitude: longitude
+                }}
+              >
+                <Callout onPress={() => navigate('Details', { organization })} style={ styles.callout }>
+                  <Text style={ styles.calloutText }>{organization.name}</Text>
+                </Callout>
+              </Marker>
+            );
           }
+          )}
         </MapView>
+        <View style={ styles.searchContainer }>
+          <View>
+            <TextInput
+              style={ styles.search }
+              value={ search }
+              onChangeText={ value => this.handleChange(value) }
+            />
+          </View>
+          <View style={ styles.listContainer }>
+            <FlatList
+              data={ searchList }
+              renderItem={ ({ item }) => ListItem(item, this.zoomToMarker) }
+              keyExtractor={ (item) => item.id }
+              o
+            />
+          </View>
+        </View>
       </View>
     );
   }
 }
 
-
-
-const mapState = ({ organizations, user }) => ({
-  organizations, user
-});
-
-const mapDispatch = null;
-
-export default connect(mapState, mapDispatch)(SearchMap);
+const ListItem = (item, zoom) => {
+  return (
+    <View>
+      <TouchableOpacity
+        onPress={ () => zoom(item.longitude, item.latitude) }
+        style={ styles.itemContainer}
+      >
+        <Text style={ styles.itemText }>
+          { item.name }&nbsp;
+        </Text>
+        <Text style={ styles.itemSubtitle }>
+          ({ item.organization_type })
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   radius: {
@@ -109,5 +169,52 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     fontWeight: 'bold'
+  },
+  searchContainer: {
+    width: 350,
+    position: 'absolute',
+    top: 8,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25
+  },
+  search: {
+    width: 350,
+    height: 40,
+    backgroundColor: 'rgb(255, 255, 255)',
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 50,
+    paddingLeft: 15,
+  },
+  listContainer: {
+    marginTop: 10
+  },
+  itemContainer: {
+    width: 350,
+    height: 40,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1
+  },
+  itemText: {
+    fontSize: 15,
+    color: 'black'
+  },
+  itemSubtitle: {
+    fontSize: 12,
+    color: 'black'
   }
-})
+});
+
+const mapState = ({ organizations, user }) => ({
+  organizations, user
+});
+
+const mapDispatch = null;
+
+export default connect(mapState, mapDispatch)(SearchMap);
