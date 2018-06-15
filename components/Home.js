@@ -1,10 +1,15 @@
 import React from 'react';
-import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl } from 'react-native';
+import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl, StyleSheet } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { getOrganizationsFromServer, getUserFromToken } from '../store';
 
 class Home extends React.Component {
+  static navigationOptions = {
+    tabBarIcon: () => <Icon size={22} name='map-pin' color="#02a4ff" />
+  }
+
   constructor() {
     super();
     this.state = { refreshing: false }
@@ -30,6 +35,7 @@ class Home extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <ScrollView
+        style={ styles.container }
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -37,15 +43,18 @@ class Home extends React.Component {
           />
         }
       >
-        <List>
+        <List
+          containerStyle={ styles.list }
+        >
           {
-            myOrgs.map((organization, index) => (
+            myOrgs.map((organization) => (
               <ListItem
                 roundAvatar
                 avatar={{uri: 'https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg'}}
+                containerStyle={ styles.listItem }
                 title={organization.name}
                 subtitle={organization.organization_type}
-                key={index}
+                key={ organization.id }
                 onPress={() => navigate('Details', { organization })}
               />
             ))
@@ -73,3 +82,18 @@ const mapDispatch = dispatch => ({
 });
 
 export default connect(mapState, mapDispatch)(Home);
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#02a4ff'
+  },
+  list: {
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#02a4ff'
+  },
+  listItem: {
+    backgroundColor: '#f9f9f9',
+    marginBottom: 5
+  }
+});

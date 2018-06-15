@@ -1,10 +1,11 @@
 import React from 'react';
 import { AsyncStorage, View } from 'react-native';
 import { connect } from 'react-redux';
-import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Asset, AppLoading } from 'expo';
 import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer, getFormsFromServer, getDescriptionsFromServer } from '../store';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Home from './Home.js';
 import OrganizationInfo from './OrganizationInfo';
 import UserRequests from './UserRequests';
@@ -14,41 +15,53 @@ import UserProfile from './UserProfile';
 import Chat from './Chat';
 import SearchMap from './SearchMap';
 
-const TabNavigator = createMaterialTopTabNavigator({
+const TabNavigator = createMaterialBottomTabNavigator({
   'My Orgs': {
-    screen: Home,
+    screen: Home
   },
   "Req's": {
     screen: UserRequests,
   },
   Find: {
     screen: SearchMap,
-  }, 
-    Acc: {
-    screen: UserProfile,
   }
 }, {
-    headerMode: 'none',
-    tabBarOptions: {
-      activeTintColor: '#02A4FF',
-      inactiveTintColor: 'grey',
-      labelStyle: {
-        fontSize: 16,
-      },
-      style: {
-        backgroundColor: '#fff',
-      }
-    },
+  initialRouteName: 'My Orgs',
+  activeTintColor: '#02a4ff',
+  inactiveTintColor: '#005d91',
+  barStyle: {
+    backgroundColor: '#fff',
+    paddingBottom: 20,
+  }
 });
 
 const NavStack = createStackNavigator({
-  Home: TabNavigator,
+  Home: {
+    screen: TabNavigator,
+    navigationOptions: {
+      title: 'Pair Up!',
+      headerRight: (
+        <Icon
+          size={22}
+          name='map-pin'
+          color="#02a4ff"
+          style={{ marginRight: 20 }}
+        />
+      )
+    }
+  },
   Details: OrganizationInfo,
   Descriptions: UserDescriptions,
   Chat: Chat,
+  UserProfile: UserProfile
 }, {
   headerMode: 'screen',
-  initialRouteName: 'Home'
+  initialRouteName: 'Home',
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#fff',
+    }
+  }
 });
 
 const RootStack = createStackNavigator({
@@ -56,7 +69,7 @@ const RootStack = createStackNavigator({
   Nav: NavStack
 }, {
   initialRouteName: 'Nav',
-  headerMode: 'none'
+  headerMode: 'none',
 });
 
 class MainStack extends React.Component {
