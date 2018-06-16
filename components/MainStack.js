@@ -21,13 +21,6 @@ const TabNavigator = createMaterialBottomTabNavigator({
   },
   "Pair Requests": {
     screen: UserRequests,
-  /*  navigationOptions: ({ screenProps }) => {
-      return {
-        title: `Pair Requests (${screenProps.requestCount})`,
-        // title: `Pair Requests (${newRequestCount})`,
-        tabBarIcon: () => <Icon size={22} name='users' color="#02a4ff" />
-      }
-    }*/
   },
   Find: {
     screen: SearchMap,

@@ -3,36 +3,30 @@ import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Text, Button, Badge } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import IconBadge from 'react-native-icon-badge'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
-    static navigationOptions = ({ screenProps }) => {
-      console.log(screenProps)
-      return {
-        // title: `Pair Requests (${screenProps.requestCount})`,
-        tabBarIcon: () => {
-          return(
-            <View>
-              <Icon size={22} name='users' color="#02a4ff" />
-              {
-                screenProps.requestCount > 0 ? (
-                  <Badge
-                    // value={screenProps.requestCount}
-                    // value={2}
-                    // textStyle={{ fontSize: 15, color: 'black', textAlign: 'center' }}
-                    containerStyle={{ position: 'absolute', left: 20, top: -25, backgroundColor: 'red', borderRadius: 15 }}
-                  >
-                    <Text style={{ fontSize: 15, color: 'white' }}>
-                      {screenProps.requestCount}
-                    </Text>
-                  </Badge>
-                ) : null
-              }
-            </View>
-          );
-        }
+  static navigationOptions = ({ screenProps }) => {
+    return {
+      tabBarIcon: () => {
+        return(
+          <View>
+            <Icon size={22} name='users' color="#02a4ff" />
+            {
+              screenProps.requestCount > 0 && (
+                <View style={{ left: 20, top: -25, backgroundColor: 'red', borderRadius: 15, width: 20, height: 20}}>
+                  <Text style={{ fontWeight: 'bold', textAlign: 'center', color: 'white' }}>
+                    {screenProps.requestCount}
+                  </Text>
+                </View>
+              )
+            }
+          </View>
+        );
       }
     }
+  }
 
   render() {
     const { user, users, receivedRequests, updateUserRequest, deleteUserRequest } = this.props;
@@ -96,8 +90,6 @@ class UserRequests extends Component {
 const mapState = ({ user, users, userRequests }, { navigation }) => {
   const receivedRequests = userRequests.filter(request => request.responderId === user.id)
   const newRequestCount = userRequests.filter(request => request.responderId === user.id && request.status === 'pending').length
-  // console.log('ownProps', ownProps)
-  // navigation.setParams({ newRequestCount })
   return {
     user,
     users,

@@ -42,7 +42,6 @@ class OrganizationInfo extends React.Component {
       return Alert.alert('Please fill out your stats before checking in!');
     }
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
-    // if(!descriptionConfirm) return
     updateUser(updatedUser);
   }
 
@@ -167,7 +166,6 @@ const mapState = ({ organizationRequests, user, forms, descriptions }, { navigat
     }
   });
   const descriptionConfirm = !boolFormDescriptions.includes(false)
-  console.log('descriptionConfirm', descriptionConfirm)
   const checkedIn = !!user.checkedInId
   return {
     user,
