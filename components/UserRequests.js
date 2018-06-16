@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Text, Button, Badge } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import IconBadge from 'react-native-icon-badge'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
