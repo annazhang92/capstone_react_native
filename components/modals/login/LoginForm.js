@@ -83,25 +83,34 @@ export default class LoginForm extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30
+    marginTop: 10
   },
   input: {
     height: 40,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    textAlign: 'center',
     marginBottom: 20,
-    borderRadius: 50,
+    borderBottomColor: '#fff',
+    borderTopColor: 'rgba(255, 255, 255, 0)',
+    borderRightColor: 'rgba(255, 255, 255, 0)',
+    borderLeftColor: 'rgba(255, 255, 255, 0)',
+    borderWidth: 1,
     color: '#FFFFFF',
     paddingHorizontal: 10
   },
   buttonContainer: {
-    backgroundColor: '#2980b9',
+    backgroundColor: 'rgb(255, 255, 255)',
+    borderWidth: 0.5,
+    borderBottomColor: '#fff',
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderLeftColor: '#fff',
     paddingVertical: 15,
     borderRadius: 50,
-    marginBottom: 10
+    marginBottom: 15
   },
   buttonText: {
     textAlign: 'center',
-    color: '#FFFFFF'
+    color: '#02a4ff'
   },
   error: {
     color: 'red',

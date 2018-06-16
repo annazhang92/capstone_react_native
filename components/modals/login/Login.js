@@ -52,29 +52,35 @@ const styles = StyleSheet.create({
     height: 300
   },
   logo: {
-    height: 200,
-    width: 200
+    height: 100,
+    width: 100
   },
   title: {
     color: '#FFF',
     marginTop: 10,
-    width: 160,
+    width: 250,
     textAlign: 'center',
-    opacity: 0.9
+    opacity: 0.9,
+    fontSize: 30
   },
   formContainer: {
     width: 300
   },
   buttonContainer: {
-    backgroundColor: '#2980b9',
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    borderWidth: 0.5,
+    borderBottomColor: '#fff',
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderLeftColor: '#fff',
     paddingVertical: 15,
     borderRadius: 50,
     marginBottom: 10
   },
   buttonText: {
     textAlign: 'center',
-    color: '#FFFFFF'
-  }
+    color: '#fff'
+  },
 });
 
 const mapState = null;
