@@ -6,9 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Icon size={22} name='users' color="#02a4ff" />
-  }
+    static navigationOptions = ({ screenProps }) => {
+      return {
+        title: `Pair Requests (${screenProps.requestCount})`,
+        tabBarIcon: () => <Icon size={22} name='users' color="#02a4ff" />
+      }
+    }
 
   render() {
     const { user, users, receivedRequests, updateUserRequest, deleteUserRequest } = this.props;
@@ -69,12 +72,16 @@ class UserRequests extends Component {
   }
 }
 
-const mapState = ({ user, users, userRequests }) => {
+const mapState = ({ user, users, userRequests }, { navigation }) => {
   const receivedRequests = userRequests.filter(request => request.responderId === user.id)
+  const newRequestCount = userRequests.filter(request => request.responderId === user.id && request.status === 'pending').length
+  // console.log('ownProps', ownProps)
+  // navigation.setParams({ newRequestCount })
   return {
     user,
     users,
-    receivedRequests
+    receivedRequests,
+    newRequestCount
   }
 }
 

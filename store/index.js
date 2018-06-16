@@ -8,7 +8,7 @@ import organizationRequests, { updateOrganizationRequest } from './organizationR
 import userOrganizations, { createUserOrganization } from './userOrganizations';
 import userRequests, { createUserRequest, updateUserRequest, deleteUserRequest } from './userRequests';
 import forms from './forms';
-import descriptions from './descriptions';
+import descriptions, { createDescription, updateDescription } from './descriptions';
 import messages, { gotMessages } from './messages';
 
 const middleware = applyMiddleware(thunk);
@@ -42,6 +42,14 @@ socket.on('newMessage', messages => {
 
 socket.on('addUserOrganization', userOrganization => {
   store.dispatch(createUserOrganization(userOrganization));
+});
+
+socket.on('createdDescription', description => {
+  store.dispatch(createDescription(description));
+});
+
+socket.on('updatedDescription', description => {
+  store.dispatch(updateDescription(description));
 });
 
 

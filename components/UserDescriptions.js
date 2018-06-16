@@ -12,6 +12,8 @@ class UserDescriptions extends Component {
       const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
       if(description) {
         memo[form.id] = description.description;
+      } else {
+        memo[form.id] = '';
       }
       return memo;
     }, {})
@@ -62,6 +64,7 @@ class UserDescriptions extends Component {
       if(bool.includes(false)) {
         Alert.alert('You must fill out all forms!')
       } else {
+        console.log(bool)
         navigation.goBack();
       }
     }

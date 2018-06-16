@@ -6,8 +6,8 @@ const CREATE_DESCRIPTION = 'CREATE_DESCRIPTION';
 const UPDATE_DESCRIPTION = 'UPDATE_DESCRIPTION';
 
 const getDescriptions = (descriptions) => ({ type: GET_DESCRIPTIONS, descriptions });
-const createDescription = (description) => ({ type: CREATE_DESCRIPTION, description });
-const updateDescription = (description) => ({ type: UPDATE_DESCRIPTION, description });
+export const createDescription = (description) => ({ type: CREATE_DESCRIPTION, description });
+export const updateDescription = (description) => ({ type: UPDATE_DESCRIPTION, description });
 
 export const getDescriptionsFromServer = () => {
   return dispatch => {

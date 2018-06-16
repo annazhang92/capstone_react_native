@@ -42,7 +42,7 @@ class OrganizationInfo extends React.Component {
       return Alert.alert('Please fill out your stats before checking in!');
     }
     const updatedUser = { id, firstName, lastName, email, password, userStatus, checkedInId: organization.id }
-    if(!descriptionConfirm) return
+    // if(!descriptionConfirm) return
     updateUser(updatedUser);
   }
 
@@ -70,7 +70,7 @@ class OrganizationInfo extends React.Component {
           {
             organization.image && (
               <Image
-                style={{ width: 400, height: 275 }}
+                style={{ height: 200, left: 0, right: 0 }}
                 source={{ uri: organization.image }}
               />
             )
@@ -158,8 +158,16 @@ const mapState = ({ organizationRequests, user, forms, descriptions }, { navigat
     return request.userId === user.id && request.organizationId === organization.id
   })
   const ownForms = forms.filter(form => form.organizationId === organization.id)
-  const ownDescriptions = descriptions.filter(description => description.userId === user.id && description.organizationId === organization.id)
-  const descriptionConfirm = ownForms.length === ownDescriptions.length;
+  const boolFormDescriptions = ownForms.map(form => {
+    const description = descriptions.find(des => des.userId === user.id && des.formId === form.id)
+    if(description && description.description) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  const descriptionConfirm = !boolFormDescriptions.includes(false)
+  console.log('descriptionConfirm', descriptionConfirm)
   const checkedIn = !!user.checkedInId
   return {
     user,

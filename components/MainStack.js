@@ -21,6 +21,13 @@ const TabNavigator = createMaterialBottomTabNavigator({
   },
   "Pair Requests": {
     screen: UserRequests,
+  /*  navigationOptions: ({ screenProps }) => {
+      return {
+        title: `Pair Requests (${screenProps.requestCount})`,
+        // title: `Pair Requests (${newRequestCount})`,
+        tabBarIcon: () => <Icon size={22} name='users' color="#02a4ff" />
+      }
+    }*/
   },
   Find: {
     screen: SearchMap,
@@ -117,12 +124,23 @@ class MainStack extends React.Component {
       );
     }
     return (
-      <RootStack />
+      <RootStack screenProps={{ requestCount: this.props.requestCount }} />
     );
   }
 }
 
-const mapState = null;
+const mapState = ({ user, userRequests }) => {
+  const requestCount = userRequests.reduce((memo, request) => {
+    if(request.responderId === user.id && request.status === 'pending') {
+      memo++;
+    }
+    return memo;
+  }, 0)
+  return {
+    requestCount
+  }
+};
+
 const mapDispatch = dispatch => ({
   getOrganizations() {
     dispatch(getOrganizationsFromServer());
