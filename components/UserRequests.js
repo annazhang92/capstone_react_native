@@ -1,15 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Text, Button } from 'react-native-elements'
+import { Text, Button, Badge } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
 
 class UserRequests extends Component {
     static navigationOptions = ({ screenProps }) => {
+      console.log(screenProps)
       return {
-        title: `Pair Requests (${screenProps.requestCount})`,
-        tabBarIcon: () => <Icon size={22} name='users' color="#02a4ff" />
+        // title: `Pair Requests (${screenProps.requestCount})`,
+        tabBarIcon: () => {
+          return(
+            <View>
+              <Icon size={22} name='users' color="#02a4ff" />
+              {
+                screenProps.requestCount > 0 ? (
+                  <Badge
+                    // value={screenProps.requestCount}
+                    // value={2}
+                    // textStyle={{ fontSize: 15, color: 'black', textAlign: 'center' }}
+                    containerStyle={{ position: 'absolute', left: 20, top: -25, backgroundColor: 'red', borderRadius: 15 }}
+                  >
+                    <Text style={{ fontSize: 15, color: 'white' }}>
+                      {screenProps.requestCount}
+                    </Text>
+                  </Badge>
+                ) : null
+              }
+            </View>
+          );
+        }
       }
     }
 
