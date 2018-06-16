@@ -22,10 +22,6 @@ class UserDescriptions extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componenentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-  }
-
   onChange(formId, input) {
     this.setState({ [formId]: input });
   }
@@ -64,7 +60,6 @@ class UserDescriptions extends Component {
       if(bool.includes(false)) {
         Alert.alert('You must fill out all forms!')
       } else {
-        console.log(bool)
         navigation.goBack();
       }
     }
