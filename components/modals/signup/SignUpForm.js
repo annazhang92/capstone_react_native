@@ -55,7 +55,7 @@ export default class SignUpForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <View style={ styles.container }>
+      <View>
         <Text style={ styles.error }>{ errors.firstName }</Text>
         <TextInput
           onChangeText={ value => this.handleChange('firstName', value) }
@@ -105,7 +105,7 @@ export default class SignUpForm extends React.Component {
           style={ styles.buttonContainer }
           onPress={ this.handleSubmit }
         >
-          <Text style={ styles.buttonText }>Sign Up</Text>
+          <Text style={ styles.buttonText }>SIGN UP</Text>
         </TouchableOpacity>
       </View>
     );
@@ -113,26 +113,32 @@ export default class SignUpForm extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 30
-  },
   input: {
     height: 40,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    marginBottom: 20,
-    borderRadius: 50,
+    textAlign: 'center',
+    marginBottom: 5,
+    borderBottomColor: '#fff',
+    borderTopColor: 'rgba(255, 255, 255, 0)',
+    borderRightColor: 'rgba(255, 255, 255, 0)',
+    borderLeftColor: 'rgba(255, 255, 255, 0)',
+    borderWidth: 1,
     color: '#FFFFFF',
     paddingHorizontal: 10
   },
   buttonContainer: {
-    backgroundColor: '#2980b9',
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    borderWidth: 1.5,
+    borderBottomColor: '#fff',
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderLeftColor: '#fff',
     paddingVertical: 15,
     borderRadius: 50,
-    marginBottom: 10
+    marginTop: 30
   },
   buttonText: {
     textAlign: 'center',
-    color: '#FFFFFF'
+    color: '#fff'
   },
   error: {
     color: 'red',

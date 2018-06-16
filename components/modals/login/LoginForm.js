@@ -45,7 +45,7 @@ export default class LoginForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <View style={ styles.container }>
+      <View>
         <Text style={ styles.error }>{ errors.email }</Text>
         <TextInput
           onChangeText={ value => this.handleChange('email', value) }
@@ -74,7 +74,7 @@ export default class LoginForm extends React.Component {
           style={ styles.buttonContainer }
           onPress={ this.handleSubmit }
         >
-          <Text style={ styles.buttonText }>Login</Text>
+          <Text style={ styles.buttonText }>LOGIN</Text>
         </TouchableOpacity>
       </View>
     );
@@ -82,13 +82,10 @@ export default class LoginForm extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10
-  },
   input: {
     height: 40,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 5,
     borderBottomColor: '#fff',
     borderTopColor: 'rgba(255, 255, 255, 0)',
     borderRightColor: 'rgba(255, 255, 255, 0)',
@@ -99,14 +96,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: 'rgb(255, 255, 255)',
-    borderWidth: 0.5,
+    borderWidth: 1.5,
     borderBottomColor: '#fff',
     borderTopColor: '#fff',
     borderRightColor: '#fff',
     borderLeftColor: '#fff',
     paddingVertical: 15,
     borderRadius: 50,
-    marginBottom: 15
+    marginBottom: 15,
+    marginTop: 30
   },
   buttonText: {
     textAlign: 'center',

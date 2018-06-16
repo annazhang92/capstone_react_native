@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { attemptLogin } from '../../../store';
 import LoginForm from './LoginForm';
@@ -20,6 +20,7 @@ class Login extends React.Component {
 
   render() {
     return (
+      <ImageBackground source={ require('../../../assets/images/bg.png') } style={{ height: '100%', width: '100%' }}>
       <KeyboardAvoidingView behavior='position' style={ styles.container }>
         <View style={ styles.logoContainer }>
           <Image source={require('../../../assets/images/logo.png')} style={ styles.logo } />
@@ -32,9 +33,10 @@ class Login extends React.Component {
           style={ styles.buttonContainer }
           onPress={ () => this.props.navigation.navigate('SignUp') }
         >
-          <Text style={ styles.buttonText }>Sign Up</Text>
+          <Text style={ styles.buttonText }>SIGN UP</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
+      </ImageBackground>
     );
   }
 }
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 300
+    height: 240
   },
   logo: {
     height: 100,
@@ -61,14 +63,15 @@ const styles = StyleSheet.create({
     width: 250,
     textAlign: 'center',
     opacity: 0.9,
-    fontSize: 30
+    fontSize: 30,
+    marginBottom: 5
   },
   formContainer: {
     width: 300
   },
   buttonContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0)',
-    borderWidth: 0.5,
+    borderWidth: 1.5,
     borderBottomColor: '#fff',
     borderTopColor: '#fff',
     borderRightColor: '#fff',

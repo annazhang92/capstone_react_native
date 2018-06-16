@@ -98,7 +98,8 @@ class MainStack extends React.Component {
       getOrgRequests(),
       getForms(),
       getDescriptions(),
-      Asset.fromModule(require('../assets/images/logo.png')).downloadAsync()
+      Asset.fromModule(require('../assets/images/logo.png')).downloadAsync(),
+      Asset.fromModule(require('../assets/images/bg.png')).downloadAsync()
     ]);
   }
 

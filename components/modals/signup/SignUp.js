@@ -23,7 +23,7 @@ class SignUp extends React.Component {
       <KeyboardAvoidingView behavior='position' style={ styles.container }>
         <View style={ styles.logoContainer }>
           <Image source={require('../../../assets/images/logo.png')} style={ styles.logo } />
-          <Text style={ styles.title }>Partner with your next training buddy, instructor, and more.</Text>
+          <Text style={ styles.title }>All we need is:</Text>
         </View>
         <View style={ styles.formContainer }>
           <SignUpForm signup={ this.signup } navigation={ this.props.navigation } />
@@ -43,18 +43,19 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 300
+    height: 180
   },
   logo: {
-    height: 200,
-    width: 200
+    height: 100,
+    width: 100
   },
   title: {
     color: '#FFF',
     marginTop: 10,
-    width: 160,
+    width: 200,
     textAlign: 'center',
-    opacity: 0.9
+    opacity: 0.9,
+    fontSize: 30
   },
   formContainer: {
     width: 300
