@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { createDescriptionOnServer, updateDescriptionOnServer } from '../store';
@@ -70,33 +70,34 @@ class UserDescriptions extends Component {
     const { onChange, onSubmit, descriptionExists } = this;
     const ownState = this.state;
     return (
-      <View>
-        <Text h3>User Descriptions</Text>
-        {
-          orgForms.map(form => {
-            const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
-            return (
-              <View
-                key={form.id}
-                style={styles.borderBox}
-              >
-                <Text h4>{form.name}</Text>
-                <TextInput
-                  style={styles.input}
-                  value={ownState[form.id]}
-                  onChangeText={(ownState) => onChange(form.id, ownState)}
-                />
-              </View>
-            );
-          })
-        }
-        <Button
-          raised
-          buttonStyle={{ backgroundColor: 'blue', borderRadius: 10 }}
-          title='Submit'
-          onPress={ () => onSubmit() }
-        />
-      </View>
+      <ImageBackground source={ require('../assets/images/bg.png') } style={{ height: '100%', width: '100%' }}>
+        <View>
+          {
+            orgForms.map(form => {
+              const description = descriptions.find(des => des.userId == user.id && des.organizationId === organization.id && des.formId === form.id)
+              return (
+                <View
+                  style={ styles.container }
+                  key={form.id}
+                >
+                  <Text style={ styles.name }>{form.name}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={ownState[form.id]}
+                    onChangeText={(ownState) => onChange(form.id, ownState)}
+                  />
+                </View>
+              );
+            })
+          }
+          <Button
+            color='#fff'
+            buttonStyle={ styles.button }
+            title='Submit'
+            onPress={ () => onSubmit() }
+          />
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -123,19 +124,38 @@ const mapDispatch = dispatch => {
 export default connect(mapState, mapDispatch)(UserDescriptions);
 
 const styles = StyleSheet.create({
-  borderBox: {
-    borderColor: 'grey',
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 20,
-    margin: 10
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40
   },
   input: {
+    color: '#fff',
+    fontSize: 15,
     height: 40,
-    backgroundColor: 'rgb(255, 255, 255)',
-    marginBottom: 20,
-    borderRadius: 10,
-    color: 'black',
-    paddingHorizontal: 10
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#fff',
+    borderLeftColor: 'transparent',
+    paddingHorizontal: 10,
+    width: '90%'
+  },
+  name: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderBottomColor: '#fff',
+    borderTopColor: '#fff',
+    borderLeftColor: '#fff',
+    borderRightColor: '#fff',
+    borderRadius: 50
   }
 });

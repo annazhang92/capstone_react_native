@@ -1,10 +1,10 @@
 import React from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Asset, AppLoading } from 'expo';
-import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer, getFormsFromServer, getDescriptionsFromServer } from '../store';
+import { getOrganizationsFromServer, getUserFromToken, getUserOrganizationsFromServer, getUsersFromServer, getUserRequestsFromServer, getOrganizationRequestsFromServer, getFormsFromServer, getDescriptionsFromServer, logOut } from '../store';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Home from './Home.js';
 import OrganizationInfo from './OrganizationInfo';

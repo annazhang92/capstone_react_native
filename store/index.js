@@ -1,8 +1,9 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { AsyncStorage } from 'react-native';
 import thunk from 'redux-thunk';
 import socket from './sockets';
 import organizations from './organizations';
-import user from './sessions';
+import user, { removeUser } from './sessions';
 import users, { updateUser } from './users';
 import organizationRequests, { updateOrganizationRequest } from './organizationRequests';
 import userOrganizations, { createUserOrganization } from './userOrganizations';
@@ -51,7 +52,6 @@ socket.on('createdDescription', description => {
 socket.on('updatedDescription', description => {
   store.dispatch(updateDescription(description));
 });
-
 
 export default store;
 export * from './organizations';

@@ -37,7 +37,6 @@ class Home extends React.Component {
     return (
       <ImageBackground source={ require('../assets/images/bg.png') } style={{ height: '100%', width: '100%' }}>
       <ScrollView
-        style={ styles.container }
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -91,18 +90,15 @@ const mapDispatch = dispatch => ({
 export default connect(mapState, mapDispatch)(Home);
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#02a4ff'
-  },
   list: {
     marginLeft: 15,
     marginRight: 15,
-    backgroundColor: '#02a4ff',
+    backgroundColor: 'transparent',
     borderTopWidth: 0,
     borderBottomWidth: 0
   },
   listItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0)',
+    backgroundColor: 'transparent',
     borderWidth: 1.5,
     borderBottomColor: '#fff',
     borderTopColor: '#fff',

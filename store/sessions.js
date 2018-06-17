@@ -2,7 +2,10 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import productionUrl from './productionUrl';
 import socket from './sockets';
+
 const GOT_USER = 'GOT_USER';
+const LOG_OUT = 'LOG_OUT';
+
 const gotUser = user => ({ type: GOT_USER, user });
 
 export const attemptLogin = (credentials, navigation) => {
@@ -51,10 +54,6 @@ export const getUserFromToken = token => {
       });
   };
 };
-
-export const updateLoggedUser = (user) => {
-  return dispatch => dispatch(gotUser(user))
-}
 
 const store = (state = {}, action) => {
   switch (action.type) {
