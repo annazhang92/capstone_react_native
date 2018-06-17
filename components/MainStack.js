@@ -30,25 +30,26 @@ const TabNavigator = createMaterialBottomTabNavigator({
   activeTintColor: '#02a4ff',
   inactiveTintColor: '#005d91',
   barStyle: {
-    backgroundColor: '#fff',
-    paddingBottom: 20,
+    backgroundColor: '#b6d8ed',
+    alignItems: 'center'
   }
 });
 
 const NavStack = createStackNavigator({
   Home: {
     screen: TabNavigator,
-    navigationOptions: {
+    navigationOptions: ({ navigation} ) => ({
       title: 'Pair Up!',
       headerRight: (
         <Icon
           size={22}
-          name='map-pin'
+          name='gear'
           color="#02a4ff"
           style={{ marginRight: 20 }}
+          onPress={ () => navigation.navigate('UserProfile')}
         />
       )
-    }
+    })
   },
   Details: OrganizationInfo,
   Descriptions: UserDescriptions,
@@ -59,7 +60,7 @@ const NavStack = createStackNavigator({
   initialRouteName: 'Home',
   navigationOptions: {
     headerStyle: {
-      backgroundColor: '#fff',
+      backgroundColor: '#b6d8ed',
     }
   }
 });

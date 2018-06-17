@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, ScrollView, Image, RefreshControl, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, RefreshControl, Alert, ImageBackground } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { createOrganizationRequestOnServer, getOrganizationRequestsFromServer, updateUserOnServer, updateLoggedUser, getUsersFromServer, getOrganizationsFromServer } from '../store';
 
@@ -65,16 +65,6 @@ class OrganizationInfo extends React.Component {
           />
         }
       >
-        <View style={styles.image}>
-          {
-            organization.image && (
-              <Image
-                style={{ height: 200, left: 0, right: 0 }}
-                source={{ uri: organization.image }}
-              />
-            )
-          }
-        </View>
         <View style={styles.container}>
           <Text h3 style={[ styles.text, { color: organization.textColor } ]}>
             {organization.name}
@@ -91,6 +81,16 @@ class OrganizationInfo extends React.Component {
           <Text style={[ styles.text, { color: organization.textColor } ]}>
             {organization.city}, {organization.state} {organization.zip}
           </Text>
+          <View style={styles.image}>
+          {
+            organization.image && (
+              <Image
+                style={{ height: 200, left: 0, right: 0 }}
+                source={{ uri: organization.image }}
+              />
+            )
+          }
+        </View>
           {
             !ownRequest && (
               <Button
@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   text: {
-    textAlign: 'left'
+    textAlign: 'left',
+    color: 'white'
   }
 });

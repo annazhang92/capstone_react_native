@@ -48,6 +48,7 @@ export default class LoginForm extends React.Component {
       <View>
         <Text style={ styles.error }>{ errors.email }</Text>
         <TextInput
+          clearTextOnFocus={ true }
           onChangeText={ value => this.handleChange('email', value) }
           placeholder='Email Address'
           placeholderTextColor='rgba(255, 255, 255, 0.7)'
@@ -60,6 +61,7 @@ export default class LoginForm extends React.Component {
         />
         <Text style={ styles.error }>{ errors.password }</Text>
         <TextInput
+          clearTextOnFocus={ true }
           onChangeText={ value => this.handleChange('password', value) }
           onSubmitEditing={ this.handleSubmit }
           placeholder='Password'

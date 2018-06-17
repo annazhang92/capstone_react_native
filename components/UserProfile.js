@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { Button, Text, FormLabel, FormInput } from 'react-native-elements';
+import { View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text, FormLabel, FormInput } from 'react-native-elements';
 
 import { updateUserOnServer } from '../store';
 
@@ -71,25 +71,29 @@ class UserProfile extends React.Component {
         const { user } = this.props;
         const { firstName, lastName, email, password, errors } = this.state;
         return (
+            <ImageBackground source={ require('../assets/images/bg.png') } style={{ height: '100%', width: '100%' }}>
             <View>
                 <Text style={styles.header} h3>My Profile</Text>
                 <Text style={styles.error}>{errors.firstName}</Text>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel labelStyle={ styles.label }>First Name</FormLabel>
                 <FormInput
+                    inputStyle={ styles.inputText }
                     style={styles.input}
                     value={firstName}
                     onChangeText={value => onChange('firstName', value)}
                 />
                 <Text style={styles.error}>{errors.lastName}</Text>
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel labelStyle={ styles.label }>Last Name</FormLabel>
                 <FormInput
+                    inputStyle={ styles.inputText }
                     style={styles.input}
                     value={lastName}
                     onChangeText={value => onChange('lastName', value)}
                 />
                 <Text style={styles.error}>{errors.email}</Text>
-                <FormLabel>Email</FormLabel>
+                <FormLabel labelStyle={ styles.label }>Email</FormLabel>
                 <FormInput
+                    inputStyle={ styles.inputText }
                     style={styles.input}
                     value={email}
                     keyboardType='email-address'
@@ -98,8 +102,9 @@ class UserProfile extends React.Component {
                     onChangeText={value => onChange('email', value)}
                 />
                 <Text style={styles.error}>{errors.password}</Text>
-                <FormLabel>Password</FormLabel>
+                <FormLabel labelStyle={ styles.label }>Password</FormLabel>
                 <FormInput
+                    inputStyle={ styles.inputText }
                     style={styles.input}
                     value={password}
                     onChangeText={value => onChange('password', value)}
@@ -108,49 +113,66 @@ class UserProfile extends React.Component {
                     style={styles.buttonContainer}
                     onPress={() => onSubmit(user)}
                 >
-                    <Text style={styles.buttonText}>Save</Text>
+                    <Text style={styles.buttonText}>SAVE</Text>
                 </TouchableOpacity>
             </View>
+            </ImageBackground>
         )
     }
 }
 
 const mapState = ({ user }) => {
-    return { user }
+  return { user }
 }
 
 const mapDispatch = (dispatch) => {
-    return {
-        updateUser: (user) => dispatch(updateUserOnServer(user))
-    }
+  return {
+    updateUser: (user) => dispatch(updateUserOnServer(user))
+  }
 }
 
 export default connect(mapState, mapDispatch)(UserProfile)
 
 const styles = StyleSheet.create({
-    header: {
-        justifyContent: 'center',
-        marginTop: 10,
-        padding: 5,
-    },
-    input: {
-        height: 40,
-        backgroundColor: 'rgb(255, 255, 255)',
-        marginBottom: 20,
-        borderRadius: 10,
-        color: 'black',
-        paddingHorizontal: 10
-    },
-    buttonContainer: {
-        backgroundColor: '#2980b9',
-        paddingVertical: 15,
-        borderRadius: 50,
-        marginBottom: 10,
-        marginTop: 10,
-        paddingHorizontal: 10
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: '#FFFFFF'
-    },
+  header: {
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 5,
+    textAlign: 'center',
+    color: '#fff'
+  },
+  input: {
+    height: 40,
+    backgroundColor: 'rgb(255, 255, 255)',
+    marginBottom: 20,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    color: '#fff',
+  },
+  buttonContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    paddingVertical: 15,
+    borderRadius: 50,
+    borderWidth: 1.5,
+    marginTop: 30,
+    paddingHorizontal: 10,
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderBottomColor: '#fff',
+    borderLeftColor: '#fff',
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%'
+
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFFFFF'
+  },
+  label: {
+      color: 'white'
+  },
+  inputText: {
+      color: '#fff'
+  }
 });

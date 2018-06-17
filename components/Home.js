@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, Button, AsyncStorage, RefreshControl, StyleSheet, ImageBackground } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -34,6 +34,7 @@ class Home extends React.Component {
     const { myOrgs } = this.props;
     const { navigate } = this.props.navigation;
     return (
+      <ImageBackground source={ require('../assets/images/bg.png') } style={{ height: '100%', width: '100%' }}>
       <ScrollView
         style={ styles.container }
         refreshControl={
@@ -56,11 +57,16 @@ class Home extends React.Component {
                 subtitle={organization.organization_type}
                 key={ organization.id }
                 onPress={() => navigate('Details', { organization })}
+                chevronColor={ '#fff' }
+                titleStyle={ styles.title }
+                subtitleStyle={ styles.subtitle }
+                avatarStyle={ styles.avatar }
               />
             ))
           }
         </List>
       </ScrollView>
+      </ImageBackground>
     );
   }
 }
@@ -88,12 +94,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#02a4ff'
   },
   list: {
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: '#02a4ff'
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: '#02a4ff',
+    borderTopWidth: 0,
+    borderBottomWidth: 0
   },
   listItem: {
-    backgroundColor: '#f9f9f9',
-    marginBottom: 5
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    borderWidth: 1.5,
+    borderBottomColor: '#fff',
+    borderTopColor: '#fff',
+    borderLeftColor: '#fff',
+    borderRightColor: '#fff',
+    marginBottom: 5,
+    paddingLeft: 15,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  title: {
+    color: '#fff',
+    fontWeight: 'bold',
+    marginLeft: 20
+  },
+  subtitle: {
+    color: 'black',
+    marginLeft: 20
+  },
+  avatar: {
+    height: 50,
+    width: 50
   }
 });

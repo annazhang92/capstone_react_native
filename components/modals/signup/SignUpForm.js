@@ -58,6 +58,7 @@ export default class SignUpForm extends React.Component {
       <View>
         <Text style={ styles.error }>{ errors.firstName }</Text>
         <TextInput
+          clearTextOnFocus={ true }
           onChangeText={ value => this.handleChange('firstName', value) }
           placeholder='First Name'
           placeholderTextColor='rgba(255, 255, 255, 0.7)'
@@ -68,6 +69,7 @@ export default class SignUpForm extends React.Component {
         />
         <Text style={ styles.error }>{ errors.lastName }</Text>
         <TextInput
+          clearTextOnFocus={ true }
           onChangeText={ value => this.handleChange('lastName', value) }
           placeholder='Last Name'
           placeholderTextColor='rgba(255, 255, 255, 0.7)'
