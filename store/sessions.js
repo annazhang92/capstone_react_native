@@ -4,9 +4,9 @@ import productionUrl from './productionUrl';
 import socket from './sockets';
 
 const GOT_USER = 'GOT_USER';
-const LOG_OUT = 'LOG_OUT';
 
 const gotUser = user => ({ type: GOT_USER, user });
+
 
 export const attemptLogin = (credentials, navigation) => {
   return dispatch => {
@@ -53,6 +53,10 @@ export const getUserFromToken = token => {
         return err;
       });
   };
+};
+
+export const updateLoggedUser = (user) => {
+  return dispatch => dispatch(gotUser(user));
 };
 
 const store = (state = {}, action) => {
