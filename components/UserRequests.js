@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, StyleSheet, ImageBackground } from 'react-native';
 import { Text, Button, Badge } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { updateUserRequestOnServer, deleteUserRequestFromServer } from '../store';
@@ -30,8 +30,8 @@ class UserRequests extends Component {
   render() {
     const { user, users, receivedRequests, updateUserRequest, deleteUserRequest } = this.props;
     return (
-      <View>
-        <Text h3 style={{ textAlign: 'center', marginBottom: 20 }}>User Requests</Text>
+      <ImageBackground source={ require('../assets/images/bg.png') } style={{ height: '100%', width: '100%' }}>
+      <View style={ styles.container }>
         {
           receivedRequests.map(request => {
             const { id, requesterId, responderId, organizationId, status } = request;
@@ -39,28 +39,26 @@ class UserRequests extends Component {
             return (
               <View
                 key={id}
-                style={{
-                  borderColor: 'grey',
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  padding: 20,
-                  margin: 10
-                }}
+                style={ styles.requestContainer }
               >
-                <Text style={{ textAlign: 'center', fontSize: 18 }}>{requester.fullName} wants to Pair Up!</Text>
+                <View style={ styles.iconContainer }>
+                  <Icon size={100} name='comments' color="#fff" />
+                </View>
+                <View style={ styles.infoContainer }>
+                <Text style={ styles.name }>{requester.fullName}</Text>
 
                 { status === 'pending' &&
                   <View>
                     <Button
-                      raised
-                      buttonStyle={{ backgroundColor: 'blue', borderRadius: 10, marginTop: 15 }}
-                      title='Accept'
+                      buttonStyle={ styles.acceptButton }
+                      title='ACCEPT'
+                      color='#02a4ff'
                       onPress={ () => updateUserRequest({ id, requesterId, responderId, organizationId, status: 'accepted' }) }
                     />
                     <Button
-                      raised
-                      buttonStyle={{ backgroundColor: 'orange', borderRadius: 10, marginTop: 15 }}
-                      title='Decline'
+                      color='#fff'
+                      buttonStyle={ styles.declineButton }
+                      title='DECLINE'
                       onPress={() => deleteUserRequest(request.id)}
                     />
                   </View>
@@ -68,20 +66,21 @@ class UserRequests extends Component {
                 {
                   status === 'accepted' && (
                     <Button
-                      raised
-                      buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
-                      title='Chat'
+                      color='#02a4ff'
+                      buttonStyle={ styles.chatButton }
+                      title='CHAT'
                       onPress={() => this.props.navigation.navigate('Chat', { receivingUser: requester })}
                     />
                   )
                 }
-
+                </View>
               </View>
             );
           })
         }
-        { !receivedRequests.length && <Text style={{ fontSize: 22, textAlign: 'center' }}>You currently have no requests</Text>}
+        { !receivedRequests.length && <Text style={ styles.noRequests }>You currently have no requests.</Text>}
       </View>
+      </ImageBackground>
     );
   }
 }
@@ -105,3 +104,75 @@ const mapDispatch = (dispatch) => {
 }
 
 export default connect(mapState, mapDispatch)(UserRequests);
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 30,
+  },
+  requestContainer: {
+    borderColor: '#fff',
+    borderWidth: 1.5,
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  iconContainer: {
+    marginLeft: 10,
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  infoContainer: {
+    flex: 3,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  name: {
+    marginTop: 10,
+    fontSize: 25,
+    color: '#fff'
+  },
+  acceptButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1.5,
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderBottomColor: '#fff',
+    borderLeftColor: '#fff',
+    borderRadius: 50,
+    marginTop: 15,
+    width: '100%'
+  },
+  declineButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    borderWidth: 1.5,
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderBottomColor: '#fff',
+    borderLeftColor: '#fff',
+    borderRadius: 50,
+    marginTop: 15,
+    marginBottom: 15
+  },
+  chatButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1.5,
+    borderTopColor: '#fff',
+    borderRightColor: '#fff',
+    borderBottomColor: '#fff',
+    borderLeftColor: '#fff',
+    borderRadius: 50,
+    marginTop: 15,
+    width: '100%',
+    marginBottom: 30
+  },
+  noRequests: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 22,
+    textAlign: 'center'
+  }
+})

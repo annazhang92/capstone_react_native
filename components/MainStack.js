@@ -23,6 +23,7 @@ const TabNavigator = createMaterialBottomTabNavigator({
     screen: UserRequests,
   },
   Find: {
+    tabBarLabel: 'Search',
     screen: SearchMap,
   }
 }, {

@@ -87,6 +87,8 @@ class SearchMap extends React.Component {
         <View style={ styles.searchContainer }>
           <View>
             <TextInput
+              clearTextOnFocus={ true }
+              placeholder='Search...'
               style={ styles.search }
               value={ search }
               onChangeText={ value => this.handleChange(value) }
@@ -185,7 +187,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(255, 255, 255)',
     borderWidth: 1,
     borderColor: '#000',
-    borderRadius: 50,
     paddingLeft: 15,
   },
   listContainer: {
@@ -199,7 +200,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'black',
-    borderWidth: 1
+    borderWidth: 1,
+    borderRadius: 50
   },
   itemText: {
     fontSize: 15,

@@ -94,8 +94,8 @@ class OrganizationInfo extends React.Component {
           {
             !ownRequest && (
               <Button
-                raised
-                buttonStyle={{ backgroundColor: 'skyblue', borderRadius: 10, marginTop: 15 }}
+                color='#fff'
+                buttonStyle={ styles.join }
                 title='Request to Join'
                 onPress={() => {
                   createOrganizationRequest({ userId: user.id, organizationId: organization.id })
@@ -106,8 +106,8 @@ class OrganizationInfo extends React.Component {
           {
             ownRequest && ownRequest.status === 'pending' && (
               <Button
-                raised
-                buttonStyle={{ backgroundColor: 'grey', borderRadius: 10, marginTop: 15 }}
+                color='#000'
+                buttonStyle={ styles.pending }
                 title='Request Pending'
                 onPress={() => console.log('this should not click')}
                 disabled={true}
@@ -117,8 +117,8 @@ class OrganizationInfo extends React.Component {
           {
             ownRequest && ownRequest.status === 'accepted' && !user.checkedInId && (
                 <Button
-                  raised
-                  buttonStyle={{ backgroundColor: 'green', borderRadius: 10, marginTop: 15 }}
+                  color='#fff'
+                  buttonStyle={ styles.checkIn }
                   title='Check In'
                   onPress={() => checkInUser(user, organization)}
                 />
@@ -127,8 +127,8 @@ class OrganizationInfo extends React.Component {
           {
             ownRequest && ownRequest.status === 'accepted' && user.checkedInId && (
                 <Button
-                  raised
-                  buttonStyle={{ backgroundColor: 'red', borderRadius: 10, marginTop: 15 }}
+                  color='#fff'
+                  buttonStyle={ styles.checkOut }
                   title='Check Out'
                   onPress={() => checkOutUser(user)}
                 />
@@ -137,8 +137,8 @@ class OrganizationInfo extends React.Component {
           {
             ownRequest && ownRequest.status === 'accepted' && (
               <Button
-                raised
-                buttonStyle={{ backgroundColor: 'purple', borderRadius: 10, marginTop: 15 }}
+                color='#fff'
+                buttonStyle={ styles.stats }
                 title={!descriptionConfirm ? 'Add Stats' : 'Edit Stats'}
                 onPress={() => this.props.navigation.navigate('Descriptions', { organization })}
               />
@@ -203,5 +203,30 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'left',
     color: 'white'
+  },
+  join: {
+    backgroundColor: '#02a4ff',
+    borderRadius: 50,
+    marginTop: 15
+  },
+  pending: {
+    backgroundColor: 'grey',
+    borderRadius: 50,
+    marginTop: 15
+  },
+  checkIn: {
+    backgroundColor: '#02a4ff',
+    borderRadius: 50,
+    marginTop: 15
+  },
+  checkOut: {
+    backgroundColor: 'red',
+    borderRadius: 50,
+    marginTop: 15
+  },
+  stats: {
+    backgroundColor: 'steelblue',
+    borderRadius: 50,
+    marginTop: 15
   }
 });
