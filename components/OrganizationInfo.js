@@ -85,7 +85,7 @@ class OrganizationInfo extends React.Component {
           {
             organization.image && (
               <Image
-                style={{ height: 200, left: 0, right: 0 }}
+                style={{ height: 200, left: 0, right: 0, marginTop: 5 }}
                 source={{ uri: organization.image }}
               />
             )
