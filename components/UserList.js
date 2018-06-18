@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { createUserRequestOnServer } from '../store';
 
@@ -10,7 +10,7 @@ class UserList extends Component {
     const { loggedUser, ownUsers, createRequest, userRequests, organization, navigation, ownForms, descriptions } = this.props;
     return (
       <View>
-      <Text h4 style={{ textAlign: 'center', marginTop: 20 }}>Pair Up!</Text>
+        <Text h4 style={ styles.header }>Checked-in Members</Text>
         {
           ownUsers.map(user => {
             const requestSent = userRequests.find(request => request.requesterId === loggedUser.id && request.responderId === user.id && request.organizationId === organization.id)
@@ -22,57 +22,42 @@ class UserList extends Component {
             return (
               <View
                 key={user.id}
-                style={{
-                  borderColor: 'grey',
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  padding: 20,
-                  margin: 10
-                }}>
-                <Text style={{ textAlign: 'center', fontSize: 18 }}>{user.fullName}</Text>
+                style={ styles.container }>
+                <Text style={ styles.name }>{user.fullName}</Text>
                 {
                   skillInfo.map(skill => {
                     return (
-                      <Text key={skill.form} style={{ textAlign: 'center', fontSize: 16 }}>{skill.form}: {skill.description}</Text>
+                      <Text key={skill.form} style={ styles.description }>{skill.form}: {skill.description}</Text>
                     );
                   })
                 }
                 {
                   !requestSent ? (
                     <Button
+                      color='#fff'
                       onPress={() => createRequest({ requesterId: loggedUser.id, responderId: user.id, organizationId: organization.id })}
-                      title='Send Request'
-                      buttonStyle={{
-                        backgroundColor: 'blue',
-                        borderRadius: 10,
-                        marginTop: 15
-                      }}
+                      title='SEND REQUEST'
+                      buttonStyle={ styles.requestButton }
                     />
-                    ) :
+                  ) :
                     requestSent && requestSent.status === 'pending' ? (
-                     <Button
-                      onPress={() => console.log("Stop pressing this button! It doesn't work!")}
-                      title='Request Sent'
-                      buttonStyle={{
-                        backgroundColor: 'blue',
-                        borderRadius: 10,
-                        marginTop: 15
-                      }}
-                      disabled={ true }
-                    />
-                    )
-                      : (
                       <Button
-                        onPress={() => navigation.navigate('Chat', { receivingUser: user })}
-                        title='Chat'
-                        buttonStyle={{
-                          backgroundColor: 'green',
-                          borderRadius: 10,
-                          marginTop: 15
-                        }}
+                        color='black'
+                        onPress={() => console.log("Stop pressing this button! It doesn't work!")}
+                        title='REQUEST SENT'
+                        buttonStyle={ styles.requestSentButton }
+                        disabled={ true }
                       />
                     )
-                  }
+                      : (
+                        <Button
+                          color='#fff'
+                          onPress={() => navigation.navigate('Chat', { receivingUser: user })}
+                          title='CHAT'
+                          buttonStyle={ styles.chatButton }
+                        />
+                      )
+                }
               </View>
             )
           })
@@ -106,3 +91,44 @@ const mapDispatch = (dispatch) => {
 }
 
 export default connect(mapState, mapDispatch)(UserList)
+
+const styles = StyleSheet.create({
+  header: {
+    textAlign: 'center',
+    marginTop: 20
+  },
+  container: {
+    padding: 20,
+    margin: 10,
+    justifyContent: 'center',
+  },
+  name: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#fff'
+  },
+  description: {
+    color: 'black',
+    textAlign: 'center',
+    fontSize: 16
+  },
+  requestButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: '#fff',
+    borderRadius: 50,
+    marginTop: 15
+  },
+  requestSentButton: {
+    backgroundColor: 'gray',
+    borderRadius: 50,
+    marginTop: 15
+  },
+  chatButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: '#fff',
+    borderRadius: 50,
+    marginTop: 15
+  }
+})

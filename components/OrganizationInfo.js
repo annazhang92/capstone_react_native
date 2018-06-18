@@ -94,7 +94,7 @@ class OrganizationInfo extends React.Component {
           {
             !ownRequest && (
               <Button
-                color='#fff'
+                color='#02a4ff'
                 buttonStyle={ styles.join }
                 title='Request to Join'
                 onPress={() => {
@@ -117,7 +117,7 @@ class OrganizationInfo extends React.Component {
           {
             ownRequest && ownRequest.status === 'accepted' && !user.checkedInId && (
                 <Button
-                  color='#fff'
+                  color='#02a4ff'
                   buttonStyle={ styles.checkIn }
                   title='Check In'
                   onPress={() => checkInUser(user, organization)}
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   join: {
-    backgroundColor: '#02a4ff',
+    backgroundColor: '#fff',
     borderRadius: 50,
     marginTop: 15
   },
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   checkIn: {
-    backgroundColor: '#02a4ff',
+    backgroundColor: '#fff',
     borderRadius: 50,
     marginTop: 15
   },
